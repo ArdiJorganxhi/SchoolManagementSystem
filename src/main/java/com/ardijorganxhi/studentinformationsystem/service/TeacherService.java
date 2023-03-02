@@ -1,15 +1,9 @@
 package com.ardijorganxhi.studentinformationsystem.service;
 
-import com.ardijorganxhi.studentinformationsystem.repository.CourseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class CourseService {
-
-    private final CourseRepository courseRepository;
-
-
-
+public class TeacherService {
 }

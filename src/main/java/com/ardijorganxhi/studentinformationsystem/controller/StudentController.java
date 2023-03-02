@@ -1,6 +1,7 @@
 package com.ardijorganxhi.studentinformationsystem.controller;
 
 import com.ardijorganxhi.studentinformationsystem.model.User;
+import com.ardijorganxhi.studentinformationsystem.service.StudentService;
 import com.ardijorganxhi.studentinformationsystem.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentController {
 
-    private final UserService userService;
+    private final StudentService studentService;
 
 
-    @GetMapping
-    public ResponseEntity<List<User>> getStudents(){
-        return ResponseEntity.ok(userService.getStudents());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getStudentById(@PathVariable Long id) throws Exception{
-        return ResponseEntity.ok(userService.getStudentById(id));
-
-    }
 }

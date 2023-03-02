@@ -26,12 +26,4 @@ public class UserService implements UserDetailsService {
         return findByEmail(username);
     }
 
-    public List<User> getStudents(){
-        return userRepository.findAll();
-    }
-
-
-    public User getStudentById(Long id) throws Exception{
-        return userRepository.findById(id).orElseThrow(() -> new Exception("Student not found!"));
-    }
 }
