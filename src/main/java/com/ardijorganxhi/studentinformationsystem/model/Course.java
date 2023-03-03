@@ -24,13 +24,13 @@ public class Course{
     private int midterm;
     private int finalExam;
 
-    @OneToMany
-    @JoinColumn(name = "student_id")
-    private List<User> users;
+
+    @OneToMany(mappedBy = "id")
+    private List<Student> students;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
-    private User user;
+    private Teacher teacher;
 
 
 

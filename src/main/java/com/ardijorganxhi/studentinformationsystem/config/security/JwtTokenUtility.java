@@ -1,6 +1,9 @@
 package com.ardijorganxhi.studentinformationsystem.config.security;
 
+import com.ardijorganxhi.studentinformationsystem.model.Student;
+import com.ardijorganxhi.studentinformationsystem.model.Teacher;
 import com.ardijorganxhi.studentinformationsystem.model.User;
+import com.ardijorganxhi.studentinformationsystem.service.StudentService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
@@ -56,6 +59,16 @@ public class JwtTokenUtility implements Serializable {
         return doGenerateToken(claims, user.getUsername());
     }
 
+    public String generateTokenForStudent(Student student){
+        Map<String, Object> claims = new HashMap<>();
+        return doGenerateToken(claims, student.getUsername());
+    }
+
+    public String generateTokenForTeacher(Teacher teacher){
+        Map<String, Object> claims = new HashMap<>();
+        return doGenerateToken(claims, teacher.getUsername());
+    }
+
 
 
     // while creating the token -
@@ -73,5 +86,19 @@ public class JwtTokenUtility implements Serializable {
     public Boolean validateToken(String token, User user) {
         final String username = getUsernameFromToken(token);
         return (username.equals(user.getUsername()) && !isTokenExpired(token));
+    }
+
+    public Boolean validateTokenForStudent(String token, Student student){
+
+        final String username = getUsernameFromToken(token);
+        return (username.equals(student.getUsername()) && !isTokenExpired(token));
+
+    }
+
+    public Boolean validateTokenForTeacher(String token, Teacher teacher){
+
+        final String username = getUsernameFromToken(token);
+        return (username.equals(teacher.getUsername()) && !isTokenExpired(token));
+
     }
 }

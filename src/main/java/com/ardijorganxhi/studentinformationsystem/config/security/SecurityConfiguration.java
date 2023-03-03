@@ -1,6 +1,8 @@
 package com.ardijorganxhi.studentinformationsystem.config.security;
 
 import com.ardijorganxhi.studentinformationsystem.config.PasswordEncoder;
+import com.ardijorganxhi.studentinformationsystem.service.StudentService;
+import com.ardijorganxhi.studentinformationsystem.service.TeacherService;
 import com.ardijorganxhi.studentinformationsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,12 +23,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
+    private final StudentService studentService;
+    private final TeacherService teacherService;
     private final PasswordEncoder passwordEncoder;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
     private final CustomRequestFilter customRequestFilter;
 
-    public SecurityConfiguration(UserService userService, PasswordEncoder passwordEncoder, JwtAuthEntryPoint jwtAuthEntryPoint, CustomRequestFilter customRequestFilter) {
+    public SecurityConfiguration(UserService userService, StudentService studentService, TeacherService teacherService, PasswordEncoder passwordEncoder, JwtAuthEntryPoint jwtAuthEntryPoint, CustomRequestFilter customRequestFilter) {
         this.userService = userService;
+        this.studentService = studentService;
+        this.teacherService = teacherService;
         this.passwordEncoder = passwordEncoder;
         this.jwtAuthEntryPoint = jwtAuthEntryPoint;
         this.customRequestFilter = customRequestFilter;
@@ -35,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/auth/**", "/**").permitAll()
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/auth/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -46,7 +52,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder.bCryptPasswordEncoder());
+        auth.userDetailsService(studentService).passwordEncoder(passwordEncoder.bCryptPasswordEncoder());
+        auth.userDetailsService(teacherService).passwordEncoder(passwordEncoder.bCryptPasswordEncoder());
     }
 
     @Bean

@@ -4,6 +4,10 @@ package com.ardijorganxhi.studentinformationsystem.config.security;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import com.ardijorganxhi.studentinformationsystem.model.Student;
+import com.ardijorganxhi.studentinformationsystem.model.Teacher;
+import com.ardijorganxhi.studentinformationsystem.service.StudentService;
+import com.ardijorganxhi.studentinformationsystem.service.TeacherService;
 import com.ardijorganxhi.studentinformationsystem.service.UserService;
 import com.ardijorganxhi.studentinformationsystem.model.User;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -22,6 +26,8 @@ public class CustomRequestFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtility jwtTokenUtility;
     private final UserService userService;
+    private final StudentService studentService;
+    private final TeacherService teacherService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, javax.servlet.http.HttpServletResponse response, javax.servlet.FilterChain filterChain) throws IOException, ServletException {
@@ -47,15 +53,26 @@ public class CustomRequestFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
                 User user = userService.findByEmail(username);
+                Student student = studentService.findByEmail(username);
+                Teacher teacher = teacherService.findByEmail(username);
 
-                if (jwtTokenUtility.validateToken(jwtToken, user)) {
+                if (jwtTokenUtility.validateTokenForTeacher(jwtToken, teacher)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                            user, user.getAuthorities());
+                            teacher, teacher.getAuthorities());
                     usernamePasswordAuthenticationToken
                             .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                     logger.info("jwt(" + username + ") -> authenticated(true)");
                 }
+                if (jwtTokenUtility.validateTokenForStudent(jwtToken, student)) {
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                            student, student.getAuthorities());
+                    usernamePasswordAuthenticationToken
+                            .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    logger.info("jwt(" + username + ") -> authenticated(true)");
+                }
+
             } catch (Exception e) {
                 logger.error("jwt(" + username + ") -> authenticated(false) \n\t - Exception:" + e.getMessage());
             }

@@ -1,8 +1,14 @@
 package com.ardijorganxhi.studentinformationsystem.repository;
 
-import com.ardijorganxhi.studentinformationsystem.model.User;
-import org.hibernate.metamodel.model.convert.spi.JpaAttributeConverter;
+import com.ardijorganxhi.studentinformationsystem.model.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TeacherRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
+
+public interface TeacherRepository extends JpaRepository<Teacher, Long> {
+
+    Optional<Teacher> findByEmail(String email);
+
+
+
 }

@@ -1,7 +1,15 @@
 package com.ardijorganxhi.studentinformationsystem.repository;
 
-import com.ardijorganxhi.studentinformationsystem.model.User;
+import com.ardijorganxhi.studentinformationsystem.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StudentRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
+
+
+public interface StudentRepository extends JpaRepository<Student, Long> {
+
+    Optional<Student> findByEmail(String email);
+
+
+
 }

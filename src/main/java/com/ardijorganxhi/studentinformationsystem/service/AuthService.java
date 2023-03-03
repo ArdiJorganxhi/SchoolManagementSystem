@@ -5,7 +5,11 @@ import com.ardijorganxhi.studentinformationsystem.config.PasswordEncoder;
 import com.ardijorganxhi.studentinformationsystem.config.security.JwtTokenUtility;
 import com.ardijorganxhi.studentinformationsystem.dto.LoginDto;
 import com.ardijorganxhi.studentinformationsystem.dto.RegistrationDto;
+import com.ardijorganxhi.studentinformationsystem.model.Student;
+import com.ardijorganxhi.studentinformationsystem.model.Teacher;
 import com.ardijorganxhi.studentinformationsystem.model.User;
+import com.ardijorganxhi.studentinformationsystem.repository.StudentRepository;
+import com.ardijorganxhi.studentinformationsystem.repository.TeacherRepository;
 import com.ardijorganxhi.studentinformationsystem.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,39 +22,43 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtility jwtTokenUtility;
     private final UserService userService;
+    private final TeacherService teacherService;
+    private final StudentService studentService;
     private final PasswordEncoder passwordEncoder;
 
 
 
-    public User registerStudent(RegistrationDto registrationDto){
-        User user = new User();
+    public Student registerStudent(RegistrationDto registrationDto){
+        Student student = new Student();
 
-        user.setName(registrationDto.getName());
-        user.setSurname(registrationDto.getSurname());
-        user.setEmail(registrationDto.getEmail());
-        user.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(registrationDto.getPassword()));
-        user.setRole("STUDENT");
+        student.setName(registrationDto.getName());
+        student.setSurname(registrationDto.getSurname());
+        student.setEmail(registrationDto.getEmail());
+        student.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(registrationDto.getPassword()));
 
-        userRepository.save(user);
 
-        return user;
+        studentRepository.save(student);
+
+        return student;
     }
 
-    public User registerTeacher(RegistrationDto registrationDto){
-        User user = new User();
+    public Teacher registerTeacher(RegistrationDto registrationDto){
+        Teacher teacher = new Teacher();
 
-        user.setName(registrationDto.getName());
-        user.setSurname(registrationDto.getSurname());
-        user.setEmail(registrationDto.getEmail());
-        user.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(registrationDto.getPassword()));
-        user.setRole("TEACHER");
+        teacher.setName(registrationDto.getName());
+        teacher.setSurname(registrationDto.getSurname());
+        teacher.setEmail(registrationDto.getEmail());
+        teacher.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(registrationDto.getPassword()));
 
-        userRepository.save(user);
 
-        return user;
+        teacherRepository.save(teacher);
+
+        return teacher;
     }
 
 
@@ -64,7 +72,17 @@ public class AuthService {
         } catch (BadCredentialsException e){
             throw new Exception("BadCredentials");
         }
-        return jwtTokenUtility.generateToken(userService.findByEmail(loginDto.getEmail()));
+        return jwtTokenUtility.generateTokenForStudent(studentService.findByEmail(loginDto.getEmail()));
+    }
+
+    public String loginTeacher(LoginDto loginDto) throws Exception{
+
+        try{
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
+        } catch (BadCredentialsException e){
+            throw new Exception("BadCredentials");
+        }
+        return jwtTokenUtility.generateTokenForTeacher(teacherService.findByEmail(loginDto.getEmail()));
     }
 
 
