@@ -1,16 +1,15 @@
 package com.ardijorganxhi.studentinformationsystem.service;
 
 
-import com.ardijorganxhi.studentinformationsystem.dto.UserDto;
 import com.ardijorganxhi.studentinformationsystem.model.Student;
-import com.ardijorganxhi.studentinformationsystem.model.Teacher;
-import com.ardijorganxhi.studentinformationsystem.model.User;
 import com.ardijorganxhi.studentinformationsystem.repository.StudentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -26,5 +25,17 @@ public class StudentService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return findByEmail(username);
+    }
+
+    public List<Student> getStudents(){
+        return studentRepository.findAll();
+    }
+
+    public Object getStudentById(Long id){
+        return studentRepository.findById(id);
+    }
+
+    public void deleteStudentById(Long id){
+          studentRepository.deleteById(id);
     }
 }

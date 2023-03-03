@@ -1,6 +1,5 @@
 package com.ardijorganxhi.studentinformationsystem.config.security;
 
-import com.ardijorganxhi.studentinformationsystem.config.PasswordEncoder;
 import com.ardijorganxhi.studentinformationsystem.service.StudentService;
 import com.ardijorganxhi.studentinformationsystem.service.TeacherService;
 import com.ardijorganxhi.studentinformationsystem.service.UserService;
@@ -41,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/auth/**").permitAll()
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/auth/**", "/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

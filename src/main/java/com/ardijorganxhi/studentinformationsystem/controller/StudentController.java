@@ -1,16 +1,14 @@
 package com.ardijorganxhi.studentinformationsystem.controller;
 
 import com.ardijorganxhi.studentinformationsystem.dto.UserDto;
+import com.ardijorganxhi.studentinformationsystem.model.Student;
 import com.ardijorganxhi.studentinformationsystem.model.User;
 import com.ardijorganxhi.studentinformationsystem.service.AuthorizationService;
 import com.ardijorganxhi.studentinformationsystem.service.StudentService;
 import com.ardijorganxhi.studentinformationsystem.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,6 +23,23 @@ public class StudentController {
 
 
 
+    @GetMapping
+    public ResponseEntity<List<Student>> getStudents(HttpServletRequest request){
+        authorizationService.getStudentFromHttpRequest(request);
+        return ResponseEntity.ok(studentService.getStudents());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getStudentById(@PathVariable Long id, HttpServletRequest request){
+        authorizationService.getStudentFromHttpRequest(request);
+        return ResponseEntity.ok(studentService.getStudentById(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteStudentById(@PathVariable Long id, HttpServletRequest request){
+        authorizationService.getStudentFromHttpRequest(request);
+        studentService.deleteStudentById(id);
+    }
 
 
 

@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class TeacherService implements UserDetailsService {
@@ -24,5 +26,17 @@ public class TeacherService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         return findByEmail(username);
+    }
+
+    public List<Teacher> getTeachers(){
+        return teacherRepository.findAll();
+    }
+
+    public Object getTeacherById(Long id){
+        return teacherRepository.findById(id);
+    }
+
+    public void deleteTeacherById(Long id){
+        teacherRepository.deleteById(id);
     }
 }

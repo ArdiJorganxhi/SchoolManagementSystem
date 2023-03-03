@@ -1,4 +1,4 @@
-package com.ardijorganxhi.studentinformationsystem.config;
+package com.ardijorganxhi.studentinformationsystem.config.security;
 
 
 import org.springframework.context.annotation.Bean;
