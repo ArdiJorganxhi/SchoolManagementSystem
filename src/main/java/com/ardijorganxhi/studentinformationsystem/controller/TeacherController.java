@@ -1,8 +1,10 @@
 package com.ardijorganxhi.studentinformationsystem.controller;
 
 
+import com.ardijorganxhi.studentinformationsystem.model.Course;
 import com.ardijorganxhi.studentinformationsystem.model.Teacher;
 import com.ardijorganxhi.studentinformationsystem.service.AuthorizationService;
+import com.ardijorganxhi.studentinformationsystem.service.CourseService;
 import com.ardijorganxhi.studentinformationsystem.service.TeacherService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ public class TeacherController {
 
     private final TeacherService teacherService;
     private final AuthorizationService authorizationService;
+    private final CourseService courseService;
 
     @GetMapping
     public ResponseEntity<List<Teacher>> getTeachers(HttpServletRequest request){
@@ -34,5 +37,11 @@ public class TeacherController {
     public void deleteTeacherById(@PathVariable Long id, HttpServletRequest request){
         authorizationService.getTeacherFromHttpRequest(request);
         teacherService.deleteTeacherById(id);
+    }
+
+    @GetMapping("/{id}/courses")
+    public ResponseEntity<List<Course>> getCoursesByTeacher(@PathVariable Long id, HttpServletRequest request){
+        authorizationService.getTeacherFromHttpRequest(request);
+        return ResponseEntity.ok(courseService.getCoursesByTeacher(id));
     }
 }

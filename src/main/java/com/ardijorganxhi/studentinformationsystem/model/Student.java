@@ -30,7 +30,7 @@ public class Student implements UserDetails {
     private String password;
 
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "students")
     private List<Course> courses;
 
     @Override

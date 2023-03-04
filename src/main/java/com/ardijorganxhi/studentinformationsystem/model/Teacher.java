@@ -28,7 +28,7 @@ public class Teacher implements UserDetails {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "teacher")
     private List<Course> courses;
 
     @Override
