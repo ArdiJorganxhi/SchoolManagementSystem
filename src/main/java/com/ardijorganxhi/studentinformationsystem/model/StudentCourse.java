@@ -11,12 +11,12 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "grades")
+@Table(name = "students_courses")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Grade {
+public class StudentCourse {
 
     @EmbeddedId
     private StudentCourseId studentCourseId;
@@ -25,7 +25,7 @@ public class Grade {
     @MapsId("studentId")
     @JoinColumn(name = "student_id")
     @JsonIgnore
-    private User user;
+    private Student student;
 
     @ManyToOne
     @MapsId("courseId")
@@ -33,6 +33,6 @@ public class Grade {
     @JsonIgnore
     private Course course;
 
-    private int midtermGrade;
-    private int finalGrade;
+    private int midtermGrade = 0;
+    private int finalGrade = 0;
 }

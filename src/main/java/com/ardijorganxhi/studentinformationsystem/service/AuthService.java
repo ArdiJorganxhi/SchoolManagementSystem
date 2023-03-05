@@ -5,6 +5,8 @@ import com.ardijorganxhi.studentinformationsystem.config.security.PasswordEncode
 import com.ardijorganxhi.studentinformationsystem.config.security.JwtTokenUtility;
 import com.ardijorganxhi.studentinformationsystem.dto.LoginDto;
 import com.ardijorganxhi.studentinformationsystem.dto.RegistrationDto;
+import com.ardijorganxhi.studentinformationsystem.mapper.StudentMapper;
+import com.ardijorganxhi.studentinformationsystem.mapper.TeacherMapper;
 import com.ardijorganxhi.studentinformationsystem.model.Student;
 import com.ardijorganxhi.studentinformationsystem.model.Teacher;
 import com.ardijorganxhi.studentinformationsystem.repository.StudentRepository;
@@ -29,34 +31,20 @@ public class AuthService {
     private final TeacherService teacherService;
     private final StudentService studentService;
     private final PasswordEncoder passwordEncoder;
+    private final StudentMapper studentMapper;
+    private final TeacherMapper teacherMapper;
 
 
 
     public Student registerStudent(RegistrationDto registrationDto){
-        Student student = new Student();
-
-        student.setName(registrationDto.getName());
-        student.setSurname(registrationDto.getSurname());
-        student.setEmail(registrationDto.getEmail());
-        student.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(registrationDto.getPassword()));
-
-
+        Student student = studentMapper.registerDto(registrationDto);
         studentRepository.save(student);
-
         return student;
     }
 
     public Teacher registerTeacher(RegistrationDto registrationDto){
-        Teacher teacher = new Teacher();
-
-        teacher.setName(registrationDto.getName());
-        teacher.setSurname(registrationDto.getSurname());
-        teacher.setEmail(registrationDto.getEmail());
-        teacher.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(registrationDto.getPassword()));
-
-
+        Teacher teacher = teacherMapper.registrationDto(registrationDto);
         teacherRepository.save(teacher);
-
         return teacher;
     }
 
@@ -66,7 +54,7 @@ public class AuthService {
 
     public String loginStudent(LoginDto loginDto) throws Exception{
 
-        try{
+        try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
         } catch (BadCredentialsException e){
             throw new Exception("BadCredentials");
@@ -76,7 +64,7 @@ public class AuthService {
 
     public String loginTeacher(LoginDto loginDto) throws Exception{
 
-        try{
+        try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
         } catch (BadCredentialsException e){
             throw new Exception("BadCredentials");

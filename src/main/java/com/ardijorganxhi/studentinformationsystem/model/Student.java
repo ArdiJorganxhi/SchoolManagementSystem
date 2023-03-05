@@ -30,8 +30,8 @@ public class Student implements UserDetails {
     private String password;
 
 
-    @OneToMany(mappedBy = "students")
-    private List<Course> courses;
+    @OneToMany(mappedBy = "student")
+    private List<StudentCourse> courses;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

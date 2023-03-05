@@ -1,5 +1,6 @@
 package com.ardijorganxhi.studentinformationsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,11 @@ public class Teacher implements UserDetails {
 
     @OneToMany(mappedBy = "teacher")
     private List<Course> courses;
+
+    @JsonManagedReference
+    public List<Course> getCourses(){
+        return courses;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

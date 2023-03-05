@@ -1,5 +1,6 @@
 package com.ardijorganxhi.studentinformationsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,12 +26,17 @@ public class Course{
     private int finalExam;
 
 
-    @OneToMany(mappedBy = "id")
-    private List<Student> students;
+    @OneToMany(mappedBy = "course")
+    private List<StudentCourse> students;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+
+    @JsonBackReference
+    public Teacher getTeacher(){
+        return teacher;
+    }
 
 
 

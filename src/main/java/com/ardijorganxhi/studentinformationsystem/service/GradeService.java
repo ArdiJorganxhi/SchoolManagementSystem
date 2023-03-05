@@ -1,6 +1,6 @@
 package com.ardijorganxhi.studentinformationsystem.service;
 
-import com.ardijorganxhi.studentinformationsystem.repository.GradeRepository;
+import com.ardijorganxhi.studentinformationsystem.repository.StudentCourseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class GradeService {
 
-    private final GradeRepository gradeRepository;
+    private final StudentCourseRepository studentCourseRepository;
 }

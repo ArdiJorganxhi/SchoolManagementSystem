@@ -1,6 +1,7 @@
 package com.ardijorganxhi.studentinformationsystem.service;
 
 import com.ardijorganxhi.studentinformationsystem.dto.CreateCourseDto;
+import com.ardijorganxhi.studentinformationsystem.mapper.CourseMapper;
 import com.ardijorganxhi.studentinformationsystem.model.Course;
 import com.ardijorganxhi.studentinformationsystem.model.Teacher;
 import com.ardijorganxhi.studentinformationsystem.repository.CourseRepository;
@@ -14,15 +15,12 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final CourseMapper courseMapper;
 
 
     public Course createCourse(CreateCourseDto courseDto, Teacher teacher){
-        Course course = new Course();
-        course.setCourseCode(courseDto.getCourseCode());
-        course.setCourseName(courseDto.getCourseName());
-        course.setMidterm(courseDto.getMidterm());
-        course.setFinalExam(courseDto.getFinalExam());
-        course.setTeacher(teacher);
+        Course course = courseMapper.createCourse(courseDto, teacher);
+        courseRepository.save(course);
         return course;
     }
 
