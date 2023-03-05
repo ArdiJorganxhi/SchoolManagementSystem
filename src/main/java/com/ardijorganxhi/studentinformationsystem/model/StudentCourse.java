@@ -19,7 +19,7 @@ import javax.persistence.*;
 public class StudentCourse {
 
     @EmbeddedId
-    private StudentCourseId studentCourseId;
+    private StudentCourseId studentCourseId = new StudentCourseId();
 
     @ManyToOne
     @MapsId("studentId")

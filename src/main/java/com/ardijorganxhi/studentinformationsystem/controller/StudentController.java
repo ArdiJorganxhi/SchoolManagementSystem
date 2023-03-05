@@ -4,6 +4,7 @@ import com.ardijorganxhi.studentinformationsystem.dto.UserDto;
 import com.ardijorganxhi.studentinformationsystem.model.Student;
 import com.ardijorganxhi.studentinformationsystem.model.User;
 import com.ardijorganxhi.studentinformationsystem.service.AuthorizationService;
+import com.ardijorganxhi.studentinformationsystem.service.CourseService;
 import com.ardijorganxhi.studentinformationsystem.service.StudentService;
 import com.ardijorganxhi.studentinformationsystem.service.UserService;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,8 @@ public class StudentController {
 
     private final StudentService studentService;
     private final AuthorizationService authorizationService;
+
+    private final CourseService courseService;
 
 
 
@@ -40,6 +43,21 @@ public class StudentController {
         authorizationService.getStudentFromHttpRequest(request);
         studentService.deleteStudentById(id);
     }
+
+    @PutMapping("/{studentId}/course/{courseId}")
+    public ResponseEntity<String> enrollToCourse(@PathVariable Long studentId, @PathVariable Long courseId, HttpServletRequest request) throws Exception {
+        authorizationService.getStudentFromHttpRequest(request);
+        courseService.enrollToCourse(studentId, courseId);
+        return ResponseEntity.ok("Enrollment is successful!");
+
+    }
+    @DeleteMapping("/{studentId}/course/{courseId}")
+    public ResponseEntity<String> deleteCourse(@PathVariable Long studentId, @PathVariable Long courseId, HttpServletRequest request) throws Exception {
+        authorizationService.getStudentFromHttpRequest(request);
+        courseService.deleteCourse(studentId, courseId);
+        return ResponseEntity.ok("Unenrollment is successful!");
+    }
+
 
 
 

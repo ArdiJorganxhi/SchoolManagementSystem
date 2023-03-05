@@ -3,8 +3,11 @@ package com.ardijorganxhi.studentinformationsystem.service;
 import com.ardijorganxhi.studentinformationsystem.dto.CreateCourseDto;
 import com.ardijorganxhi.studentinformationsystem.mapper.CourseMapper;
 import com.ardijorganxhi.studentinformationsystem.model.Course;
+import com.ardijorganxhi.studentinformationsystem.model.Student;
+import com.ardijorganxhi.studentinformationsystem.model.StudentCourse;
 import com.ardijorganxhi.studentinformationsystem.model.Teacher;
 import com.ardijorganxhi.studentinformationsystem.repository.CourseRepository;
+import com.ardijorganxhi.studentinformationsystem.repository.StudentCourseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,8 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final CourseMapper courseMapper;
+    private final StudentService studentService;
+    private final StudentCourseRepository studentCourseRepository;
 
 
     public Course createCourse(CreateCourseDto courseDto, Teacher teacher){
@@ -29,6 +34,30 @@ public class CourseService {
     }
     public List<Course> getCoursesByTeacher(Long id){
         return courseRepository.findAllByTeacherId(id);
+    }
+
+    public void enrollToCourse(Long studentId, Long courseId) throws Exception{
+
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new Exception("Course not found!"));
+        Student student = studentService.getStudentById(studentId).get();
+
+        StudentCourse studentCourse = new StudentCourse();
+        studentCourse.setStudent(student);
+        studentCourse.setCourse(course);
+        student.getCourses().add(studentCourse);
+        studentCourseRepository.save(studentCourse);
+
+    }
+
+    public void deleteCourse(Long studentId, Long courseId) throws Exception{
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new Exception("Course not found!"));
+        Student student = studentService.getStudentById(studentId).get();
+
+        StudentCourse studentCourse = new StudentCourse();
+        studentCourse.setStudent(student);
+        studentCourse.setCourse(course);
+        student.getCourses().remove(course);
+        studentCourseRepository.delete(studentCourse);
     }
 
 

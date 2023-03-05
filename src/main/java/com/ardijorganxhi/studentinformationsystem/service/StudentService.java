@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -31,7 +32,7 @@ public class StudentService implements UserDetailsService {
         return studentRepository.findAll();
     }
 
-    public Object getStudentById(Long id){
+    public Optional<Student> getStudentById(Long id){
         return studentRepository.findById(id);
     }
 
