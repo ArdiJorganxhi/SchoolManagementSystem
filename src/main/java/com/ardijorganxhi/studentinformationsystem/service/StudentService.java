@@ -4,6 +4,7 @@ package com.ardijorganxhi.studentinformationsystem.service;
 import com.ardijorganxhi.studentinformationsystem.dto.StudentDto;
 import com.ardijorganxhi.studentinformationsystem.mapper.StudentMapper;
 import com.ardijorganxhi.studentinformationsystem.model.Student;
+import com.ardijorganxhi.studentinformationsystem.model.StudentCourse;
 import com.ardijorganxhi.studentinformationsystem.repository.StudentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +33,10 @@ public class StudentService implements UserDetailsService {
 
     public List<StudentDto> getStudents(){
         return studentMapper.listToDto(studentRepository.findAll());
+    }
+
+    public List<StudentCourse> getCourses(Student student){
+        return student.getCourses();
     }
 
     public StudentDto getStudentById(Long id){

@@ -1,5 +1,6 @@
 package com.ardijorganxhi.studentinformationsystem.controller;
 
+import com.ardijorganxhi.studentinformationsystem.dto.CourseDto;
 import com.ardijorganxhi.studentinformationsystem.dto.CreateCourseDto;
 import com.ardijorganxhi.studentinformationsystem.dto.GradeDto;
 import com.ardijorganxhi.studentinformationsystem.model.Course;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/course")
@@ -29,6 +31,15 @@ public class CourseController {
         Teacher teacher = authorizationService.getTeacherFromHttpRequest(request);
         return ResponseEntity.ok(courseService.createCourse(courseDto, teacher));
     }
+
+    @GetMapping
+    public ResponseEntity<List<CourseDto>> getCourses(HttpServletRequest request){
+        authorizationService.getStudentFromHttpRequest(request);
+        authorizationService.getTeacherFromHttpRequest(request);
+        return ResponseEntity.ok(courseService.getCourses());
+    }
+
+
 
     @PutMapping("/{courseId}/student/{studentId}/grade")
     public ResponseEntity<StudentCourse> gradeStudent(@PathVariable Long courseId, @PathVariable Long studentId, @RequestBody GradeDto gradeDto, HttpServletRequest request) throws Exception {

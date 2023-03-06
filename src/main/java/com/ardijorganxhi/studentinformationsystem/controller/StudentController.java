@@ -1,6 +1,8 @@
 package com.ardijorganxhi.studentinformationsystem.controller;
 
 import com.ardijorganxhi.studentinformationsystem.dto.StudentDto;
+import com.ardijorganxhi.studentinformationsystem.model.Student;
+import com.ardijorganxhi.studentinformationsystem.model.StudentCourse;
 import com.ardijorganxhi.studentinformationsystem.service.AuthorizationService;
 import com.ardijorganxhi.studentinformationsystem.service.CourseService;
 import com.ardijorganxhi.studentinformationsystem.service.StudentService;
@@ -47,6 +49,11 @@ public class StudentController {
         courseService.enrollToCourse(studentId, courseId);
         return ResponseEntity.ok("Enrollment is successful!");
 
+    }
+    @GetMapping("/courses")
+    public ResponseEntity<List<StudentCourse>> getCourses(HttpServletRequest request) {
+        Student student = authorizationService.getStudentFromHttpRequest(request);
+        return ResponseEntity.ok(studentService.getCourses(student));
     }
     @DeleteMapping("/{studentId}/course/{courseId}")
     public ResponseEntity<String> unEnrollFromCourse(@PathVariable Long studentId, @PathVariable Long courseId, HttpServletRequest request) throws Exception {
