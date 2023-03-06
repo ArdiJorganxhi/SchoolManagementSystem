@@ -33,4 +33,5 @@ public class StudentCourse {
 
     private int midtermGrade = 0;
     private int finalGrade = 0;
+    private int grade = 0;
 }

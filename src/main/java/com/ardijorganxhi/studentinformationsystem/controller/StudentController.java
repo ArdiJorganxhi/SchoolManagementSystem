@@ -27,7 +27,7 @@ public class StudentController {
 
 
     @GetMapping
-    public ResponseEntity<List<Student>> getStudents(HttpServletRequest request){
+    public ResponseEntity<List<UserDto>> getStudents(HttpServletRequest request){
         authorizationService.getStudentFromHttpRequest(request);
         return ResponseEntity.ok(studentService.getStudents());
     }
