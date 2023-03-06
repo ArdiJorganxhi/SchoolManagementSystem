@@ -19,15 +19,13 @@ public class GradeService {
     private final StudentService studentService;
 
     public StudentCourse gradeStudent(Long studentId, Long courseId, GradeDto gradeDto) throws Exception{
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new Exception("Course not found!"));
-        Student student = studentService.getStudent(studentId);
-        int midtermPercentage = course.getMidterm() / 100;
-        int finalExamPercentage = course.getFinalExam() / 100;
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setStudent(student);
-        studentCourse.setCourse(course);
+        int midtermPercentage = gradeDto.getMidterm() / 100;
+        int finalExamPercentage = gradeDto.getFinalExam() / 100;
+        StudentCourse studentCourse = studentCourseRepository.findByStudentIdAndCourseId(studentId, courseId);
         studentCourse.setMidtermGrade(gradeDto.getMidterm());
         studentCourse.setFinalGrade(gradeDto.getFinalExam());
+        studentCourse.setGrade(gradeDto.getMidterm() * midtermPercentage + gradeDto.getFinalExam() * finalExamPercentage);
+        studentCourseRepository.save(studentCourse);
 
         return studentCourse;
     }

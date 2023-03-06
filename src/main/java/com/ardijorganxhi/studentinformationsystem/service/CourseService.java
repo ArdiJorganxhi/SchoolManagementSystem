@@ -51,6 +51,11 @@ public class CourseService {
 
     }
 
+    public void unEnrollFromCourse(Long studentId, Long courseId) throws Exception {
+
+        studentCourseRepository.unEnrollFromCourse(studentId, courseId);
+    }
+
 
 
 
