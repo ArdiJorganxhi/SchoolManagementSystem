@@ -1,5 +1,6 @@
 package com.ardijorganxhi.studentinformationsystem.service;
 
+import com.ardijorganxhi.studentinformationsystem.dto.CourseDto;
 import com.ardijorganxhi.studentinformationsystem.dto.CreateCourseDto;
 import com.ardijorganxhi.studentinformationsystem.mapper.CourseMapper;
 import com.ardijorganxhi.studentinformationsystem.model.Course;
@@ -29,36 +30,27 @@ public class CourseService {
         return course;
     }
 
-    public List<Course> getCourses(){
-        return courseRepository.findAll();
+    public List<CourseDto> getCourses(){
+        return courseMapper.listToDto(courseRepository.findAll());
     }
-    public List<Course> getCoursesByTeacher(Long id){
-        return courseRepository.findAllByTeacherId(id);
+    public List<CourseDto> getCoursesByTeacher(Long id){
+
+        return courseMapper.listToDto(courseRepository.findAllByTeacherId(id));
     }
 
     public void enrollToCourse(Long studentId, Long courseId) throws Exception{
 
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new Exception("Course not found!"));
-        Student student = studentService.getStudentById(studentId).get();
+        Student student = studentService.getStudent(studentId);
 
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setStudent(student);
-        studentCourse.setCourse(course);
+        StudentCourse studentCourse = studentCourseRepository.findByStudentIdAndCourseId(studentId, courseId);
         student.getCourses().add(studentCourse);
         studentCourseRepository.save(studentCourse);
 
     }
 
-    public void deleteCourse(Long studentId, Long courseId) throws Exception{
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new Exception("Course not found!"));
-        Student student = studentService.getStudentById(studentId).get();
 
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setStudent(student);
-        studentCourse.setCourse(course);
-        student.getCourses().remove(course);
-        studentCourseRepository.delete(studentCourse);
-    }
+
 
 
 

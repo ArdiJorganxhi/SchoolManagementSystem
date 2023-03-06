@@ -3,10 +3,7 @@ package com.ardijorganxhi.studentinformationsystem.model;
 
 import com.ardijorganxhi.studentinformationsystem.embedded.StudentCourseId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class StudentCourse {
 
     @EmbeddedId

@@ -1,17 +1,19 @@
 package com.ardijorganxhi.studentinformationsystem.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.ardijorganxhi.studentinformationsystem.model.StudentCourse;
+import lombok.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class UserDto {
 
     private long id;
     private String name;
     private String surname;
+    private List<StudentCourse> courses;
 }

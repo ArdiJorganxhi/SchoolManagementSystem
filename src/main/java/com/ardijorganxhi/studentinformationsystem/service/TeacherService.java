@@ -1,5 +1,7 @@
 package com.ardijorganxhi.studentinformationsystem.service;
 
+import com.ardijorganxhi.studentinformationsystem.dto.UserDto;
+import com.ardijorganxhi.studentinformationsystem.mapper.TeacherMapper;
 import com.ardijorganxhi.studentinformationsystem.model.Teacher;
 import com.ardijorganxhi.studentinformationsystem.model.User;
 import com.ardijorganxhi.studentinformationsystem.repository.TeacherRepository;
@@ -17,6 +19,7 @@ import java.util.List;
 public class TeacherService implements UserDetailsService {
 
     private final TeacherRepository teacherRepository;
+    private final TeacherMapper teacherMapper;
 
     public Teacher findByEmail(String email){
         return teacherRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(""));
@@ -28,12 +31,16 @@ public class TeacherService implements UserDetailsService {
         return findByEmail(username);
     }
 
-    public List<Teacher> getTeachers(){
-        return teacherRepository.findAll();
+    public List<UserDto> getTeachers(){
+        return teacherMapper.listToDto(teacherRepository.findAll());
     }
 
-    public Object getTeacherById(Long id){
-        return teacherRepository.findById(id);
+    public UserDto getTeacherById(Long id){
+        return teacherMapper.toDto(teacherRepository.findById(id).get());
+    }
+
+    public UserDto getTeacher(Long id){
+        return teacherMapper.toDto(teacherRepository.findById(id).get());
     }
 
     public void deleteTeacherById(Long id){

@@ -51,12 +51,6 @@ public class StudentController {
         return ResponseEntity.ok("Enrollment is successful!");
 
     }
-    @DeleteMapping("/{studentId}/course/{courseId}")
-    public ResponseEntity<String> deleteCourse(@PathVariable Long studentId, @PathVariable Long courseId, HttpServletRequest request) throws Exception {
-        authorizationService.getStudentFromHttpRequest(request);
-        courseService.deleteCourse(studentId, courseId);
-        return ResponseEntity.ok("Unenrollment is successful!");
-    }
 
 
 

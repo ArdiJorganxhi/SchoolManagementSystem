@@ -1,6 +1,8 @@
 package com.ardijorganxhi.studentinformationsystem.service;
 
 
+import com.ardijorganxhi.studentinformationsystem.dto.UserDto;
+import com.ardijorganxhi.studentinformationsystem.mapper.StudentMapper;
 import com.ardijorganxhi.studentinformationsystem.model.Student;
 import com.ardijorganxhi.studentinformationsystem.repository.StudentRepository;
 import lombok.AllArgsConstructor;
@@ -10,13 +12,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class StudentService implements UserDetailsService {
 
     private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
 
     public Student findByEmail(String email){
         return studentRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(""));
@@ -28,12 +30,16 @@ public class StudentService implements UserDetailsService {
         return findByEmail(username);
     }
 
-    public List<Student> getStudents(){
-        return studentRepository.findAll();
+    public List<UserDto> getStudents(){
+        return studentMapper.listToDto(studentRepository.findAll());
     }
 
-    public Optional<Student> getStudentById(Long id){
-        return studentRepository.findById(id);
+    public UserDto getStudentById(Long id){
+        return studentMapper.toDto(studentRepository.findById(id).get());
+    }
+
+    public Student getStudent(Long id){
+        return studentRepository.findById(id).get();
     }
 
     public void deleteStudentById(Long id){
