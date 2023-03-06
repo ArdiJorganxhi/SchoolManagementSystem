@@ -2,10 +2,7 @@ package com.ardijorganxhi.studentinformationsystem.controller;
 
 
 import com.ardijorganxhi.studentinformationsystem.dto.CourseDto;
-import com.ardijorganxhi.studentinformationsystem.dto.UserDto;
-import com.ardijorganxhi.studentinformationsystem.model.Course;
-import com.ardijorganxhi.studentinformationsystem.model.Teacher;
-import com.ardijorganxhi.studentinformationsystem.model.User;
+import com.ardijorganxhi.studentinformationsystem.dto.TeacherDto;
 import com.ardijorganxhi.studentinformationsystem.service.AuthorizationService;
 import com.ardijorganxhi.studentinformationsystem.service.CourseService;
 import com.ardijorganxhi.studentinformationsystem.service.TeacherService;
@@ -26,13 +23,13 @@ public class TeacherController {
     private final CourseService courseService;
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getTeachers(HttpServletRequest request){
+    public ResponseEntity<List<TeacherDto>> getTeachers(HttpServletRequest request){
         authorizationService.getTeacherFromHttpRequest(request);
         return ResponseEntity.ok(teacherService.getTeachers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getTeacherById(@PathVariable Long id, HttpServletRequest request){
+    public ResponseEntity<TeacherDto> getTeacherById(@PathVariable Long id, HttpServletRequest request){
         authorizationService.getTeacherFromHttpRequest(request);
         return ResponseEntity.ok(teacherService.getTeacherById(id));
     }

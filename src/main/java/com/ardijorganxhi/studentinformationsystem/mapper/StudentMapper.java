@@ -3,10 +3,8 @@ package com.ardijorganxhi.studentinformationsystem.mapper;
 
 import com.ardijorganxhi.studentinformationsystem.config.security.PasswordEncoder;
 import com.ardijorganxhi.studentinformationsystem.dto.RegistrationDto;
-import com.ardijorganxhi.studentinformationsystem.dto.UserDto;
+import com.ardijorganxhi.studentinformationsystem.dto.StudentDto;
 import com.ardijorganxhi.studentinformationsystem.model.Student;
-import com.ardijorganxhi.studentinformationsystem.model.Teacher;
-import com.ardijorganxhi.studentinformationsystem.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -30,16 +28,16 @@ public class StudentMapper {
                 .build();
     }
 
-    public UserDto toDto(Student student){
-        return UserDto.builder()
+    public StudentDto toDto(Student student){
+        return StudentDto.builder()
                 .id(student.getId())
                 .name(student.getName())
                 .surname(student.getSurname())
-                .courses(student.getCourses())
+                .studentCourses(student.getCourses())
                 .build();
     }
 
-    public List<UserDto> listToDto(List<Student> students){
+    public List<StudentDto> listToDto(List<Student> students){
         return students.stream().map(this::toDto).collect(Collectors.toList());
     }
 

@@ -1,7 +1,7 @@
 package com.ardijorganxhi.studentinformationsystem.service;
 
 
-import com.ardijorganxhi.studentinformationsystem.dto.UserDto;
+import com.ardijorganxhi.studentinformationsystem.dto.StudentDto;
 import com.ardijorganxhi.studentinformationsystem.mapper.StudentMapper;
 import com.ardijorganxhi.studentinformationsystem.model.Student;
 import com.ardijorganxhi.studentinformationsystem.repository.StudentRepository;
@@ -30,11 +30,11 @@ public class StudentService implements UserDetailsService {
         return findByEmail(username);
     }
 
-    public List<UserDto> getStudents(){
+    public List<StudentDto> getStudents(){
         return studentMapper.listToDto(studentRepository.findAll());
     }
 
-    public UserDto getStudentById(Long id){
+    public StudentDto getStudentById(Long id){
         return studentMapper.toDto(studentRepository.findById(id).get());
     }
 

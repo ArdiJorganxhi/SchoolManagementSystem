@@ -1,12 +1,9 @@
 package com.ardijorganxhi.studentinformationsystem.controller;
 
-import com.ardijorganxhi.studentinformationsystem.dto.UserDto;
-import com.ardijorganxhi.studentinformationsystem.model.Student;
-import com.ardijorganxhi.studentinformationsystem.model.User;
+import com.ardijorganxhi.studentinformationsystem.dto.StudentDto;
 import com.ardijorganxhi.studentinformationsystem.service.AuthorizationService;
 import com.ardijorganxhi.studentinformationsystem.service.CourseService;
 import com.ardijorganxhi.studentinformationsystem.service.StudentService;
-import com.ardijorganxhi.studentinformationsystem.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +24,13 @@ public class StudentController {
 
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getStudents(HttpServletRequest request){
+    public ResponseEntity<List<StudentDto>> getStudents(HttpServletRequest request){
         authorizationService.getStudentFromHttpRequest(request);
         return ResponseEntity.ok(studentService.getStudents());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getStudentById(@PathVariable Long id, HttpServletRequest request){
+    public ResponseEntity<StudentDto> getStudentById(@PathVariable Long id, HttpServletRequest request){
         authorizationService.getStudentFromHttpRequest(request);
         return ResponseEntity.ok(studentService.getStudentById(id));
     }

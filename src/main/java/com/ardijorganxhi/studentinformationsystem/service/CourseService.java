@@ -43,7 +43,9 @@ public class CourseService {
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new Exception("Course not found!"));
         Student student = studentService.getStudent(studentId);
 
-        StudentCourse studentCourse = studentCourseRepository.findByStudentIdAndCourseId(studentId, courseId);
+        StudentCourse studentCourse = new StudentCourse();
+        studentCourse.setCourse(course);
+        studentCourse.setStudent(student);
         student.getCourses().add(studentCourse);
         studentCourseRepository.save(studentCourse);
 

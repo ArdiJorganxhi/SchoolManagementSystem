@@ -10,10 +10,10 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class UserDto {
+public class StudentDto {
 
     private long id;
     private String name;
     private String surname;
-    private List<StudentCourse> courses;
+    private List<StudentCourse> studentCourses;
 }

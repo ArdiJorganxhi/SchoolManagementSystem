@@ -1,12 +1,10 @@
 package com.ardijorganxhi.studentinformationsystem.service;
 
-import com.ardijorganxhi.studentinformationsystem.dto.UserDto;
+import com.ardijorganxhi.studentinformationsystem.dto.TeacherDto;
 import com.ardijorganxhi.studentinformationsystem.mapper.TeacherMapper;
 import com.ardijorganxhi.studentinformationsystem.model.Teacher;
-import com.ardijorganxhi.studentinformationsystem.model.User;
 import com.ardijorganxhi.studentinformationsystem.repository.TeacherRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,15 +29,15 @@ public class TeacherService implements UserDetailsService {
         return findByEmail(username);
     }
 
-    public List<UserDto> getTeachers(){
+    public List<TeacherDto> getTeachers(){
         return teacherMapper.listToDto(teacherRepository.findAll());
     }
 
-    public UserDto getTeacherById(Long id){
+    public TeacherDto getTeacherById(Long id){
         return teacherMapper.toDto(teacherRepository.findById(id).get());
     }
 
-    public UserDto getTeacher(Long id){
+    public TeacherDto getTeacher(Long id){
         return teacherMapper.toDto(teacherRepository.findById(id).get());
     }
 
