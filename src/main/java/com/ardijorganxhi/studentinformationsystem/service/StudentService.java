@@ -1,7 +1,9 @@
 package com.ardijorganxhi.studentinformationsystem.service;
 
 
+import com.ardijorganxhi.studentinformationsystem.dto.StudentCourseDto;
 import com.ardijorganxhi.studentinformationsystem.dto.StudentDto;
+import com.ardijorganxhi.studentinformationsystem.mapper.StudentCourseMapper;
 import com.ardijorganxhi.studentinformationsystem.mapper.StudentMapper;
 import com.ardijorganxhi.studentinformationsystem.model.Student;
 import com.ardijorganxhi.studentinformationsystem.model.StudentCourse;
@@ -20,6 +22,7 @@ public class StudentService implements UserDetailsService {
 
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+    private final StudentCourseMapper studentCourseMapper;
 
     public Student findByEmail(String email){
         return studentRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(""));
@@ -35,8 +38,8 @@ public class StudentService implements UserDetailsService {
         return studentMapper.listToDto(studentRepository.findAll());
     }
 
-    public List<StudentCourse> getCourses(Student student){
-        return student.getCourses();
+    public List<StudentCourseDto> getCourses(Student student){
+        return studentCourseMapper.listToDto(student.getCourses());
     }
 
     public StudentDto getStudentById(Long id){

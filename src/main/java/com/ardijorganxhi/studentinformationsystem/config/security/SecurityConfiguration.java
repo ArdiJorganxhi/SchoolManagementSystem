@@ -2,7 +2,6 @@ package com.ardijorganxhi.studentinformationsystem.config.security;
 
 import com.ardijorganxhi.studentinformationsystem.service.StudentService;
 import com.ardijorganxhi.studentinformationsystem.service.TeacherService;
-import com.ardijorganxhi.studentinformationsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,15 +20,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
     private final StudentService studentService;
     private final TeacherService teacherService;
     private final PasswordEncoder passwordEncoder;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
     private final CustomRequestFilter customRequestFilter;
 
-    public SecurityConfiguration(UserService userService, StudentService studentService, TeacherService teacherService, PasswordEncoder passwordEncoder, JwtAuthEntryPoint jwtAuthEntryPoint, CustomRequestFilter customRequestFilter) {
-        this.userService = userService;
+    public SecurityConfiguration(StudentService studentService, TeacherService teacherService, PasswordEncoder passwordEncoder, JwtAuthEntryPoint jwtAuthEntryPoint, CustomRequestFilter customRequestFilter) {
         this.studentService = studentService;
         this.teacherService = teacherService;
         this.passwordEncoder = passwordEncoder;

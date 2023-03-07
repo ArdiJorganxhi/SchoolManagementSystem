@@ -1,7 +1,6 @@
 package com.ardijorganxhi.studentinformationsystem.service;
 
 
-import com.ardijorganxhi.studentinformationsystem.config.security.PasswordEncoder;
 import com.ardijorganxhi.studentinformationsystem.config.security.JwtTokenUtility;
 import com.ardijorganxhi.studentinformationsystem.dto.LoginDto;
 import com.ardijorganxhi.studentinformationsystem.dto.RegistrationDto;
@@ -11,7 +10,6 @@ import com.ardijorganxhi.studentinformationsystem.model.Student;
 import com.ardijorganxhi.studentinformationsystem.model.Teacher;
 import com.ardijorganxhi.studentinformationsystem.repository.StudentRepository;
 import com.ardijorganxhi.studentinformationsystem.repository.TeacherRepository;
-import com.ardijorganxhi.studentinformationsystem.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,15 +20,12 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtility jwtTokenUtility;
-    private final UserService userService;
     private final TeacherService teacherService;
     private final StudentService studentService;
-    private final PasswordEncoder passwordEncoder;
     private final StudentMapper studentMapper;
     private final TeacherMapper teacherMapper;
 

@@ -20,8 +20,6 @@ public class Course{
     private long id;
     private String courseCode;
     private String courseName;
-    private int midterm;
-    private int finalExam;
 
 
     @OneToMany(mappedBy = "course")

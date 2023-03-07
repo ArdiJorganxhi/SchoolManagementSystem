@@ -1,5 +1,6 @@
 package com.ardijorganxhi.studentinformationsystem.controller;
 
+import com.ardijorganxhi.studentinformationsystem.dto.StudentCourseDto;
 import com.ardijorganxhi.studentinformationsystem.dto.StudentDto;
 import com.ardijorganxhi.studentinformationsystem.model.Student;
 import com.ardijorganxhi.studentinformationsystem.model.StudentCourse;
@@ -51,7 +52,7 @@ public class StudentController {
 
     }
     @GetMapping("/courses")
-    public ResponseEntity<List<StudentCourse>> getCourses(HttpServletRequest request) {
+    public ResponseEntity<List<StudentCourseDto>> getCourses(HttpServletRequest request) {
         Student student = authorizationService.getStudentFromHttpRequest(request);
         return ResponseEntity.ok(studentService.getCourses(student));
     }

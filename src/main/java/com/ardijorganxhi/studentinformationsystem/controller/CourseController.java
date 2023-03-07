@@ -47,5 +47,11 @@ public class CourseController {
         return ResponseEntity.ok(gradeService.gradeStudent(studentId, courseId, gradeDto));
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteCourseById(@PathVariable Long id, HttpServletRequest request){
+        authorizationService.getTeacherFromHttpRequest(request);
+        courseService.deleteCourseById(id);
+    }
+
 
 }

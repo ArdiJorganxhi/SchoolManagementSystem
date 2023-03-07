@@ -2,8 +2,6 @@ package com.ardijorganxhi.studentinformationsystem.config.security;
 
 import com.ardijorganxhi.studentinformationsystem.model.Student;
 import com.ardijorganxhi.studentinformationsystem.model.Teacher;
-import com.ardijorganxhi.studentinformationsystem.model.User;
-import com.ardijorganxhi.studentinformationsystem.service.StudentService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
@@ -22,7 +20,6 @@ public class JwtTokenUtility implements Serializable {
     private static final long serialVersionUID = -2550185165626007488L;
 
     public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60;
-    public static final long JWT_TOKEN_VALIDITY_REMEMBER_ME = 24 * 60 * 60 * 7;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -53,11 +50,7 @@ public class JwtTokenUtility implements Serializable {
         return expiration.before(new Date());
     }
 
-    // generate token for user
-    public String generateToken(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, user.getUsername());
-    }
+
 
     public String generateTokenForStudent(Student student){
         Map<String, Object> claims = new HashMap<>();
@@ -83,10 +76,7 @@ public class JwtTokenUtility implements Serializable {
     }
 
     // validate token
-    public Boolean validateToken(String token, User user) {
-        final String username = getUsernameFromToken(token);
-        return (username.equals(user.getUsername()) && !isTokenExpired(token));
-    }
+
 
     public Boolean validateTokenForStudent(String token, Student student){
 

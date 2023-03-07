@@ -8,8 +8,6 @@ import com.ardijorganxhi.studentinformationsystem.model.Student;
 import com.ardijorganxhi.studentinformationsystem.model.Teacher;
 import com.ardijorganxhi.studentinformationsystem.service.StudentService;
 import com.ardijorganxhi.studentinformationsystem.service.TeacherService;
-import com.ardijorganxhi.studentinformationsystem.service.UserService;
-import com.ardijorganxhi.studentinformationsystem.model.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +23,6 @@ import java.io.IOException;
 public class CustomRequestFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtility jwtTokenUtility;
-    private final UserService userService;
     private final StudentService studentService;
     private final TeacherService teacherService;
 
@@ -52,7 +49,6 @@ public class CustomRequestFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
-                User user = userService.findByEmail(username);
                 Student student = studentService.findByEmail(username);
                 Teacher teacher = teacherService.findByEmail(username);
 

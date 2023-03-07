@@ -56,6 +56,10 @@ public class CourseService {
         studentCourseRepository.unEnrollFromCourse(studentId, courseId);
     }
 
+    public void deleteCourseById(Long id){
+        courseRepository.deleteById(id);
+    }
+
 
 
 
