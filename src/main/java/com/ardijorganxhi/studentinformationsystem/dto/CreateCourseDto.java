@@ -13,6 +13,4 @@ public class CreateCourseDto {
 
     private String courseCode;
     private String courseName;
-    private int midterm;
-    private int finalExam;
 }

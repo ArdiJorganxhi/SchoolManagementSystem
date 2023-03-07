@@ -20,8 +20,6 @@ public class CourseMapper {
         return Course.builder()
                 .courseCode(courseDto.getCourseCode())
                 .courseName(courseDto.getCourseName())
-                .midterm(courseDto.getMidterm())
-                .finalExam(courseDto.getFinalExam())
                 .teacher(teacher)
                 .build();
     }
@@ -30,8 +28,6 @@ public class CourseMapper {
         return CourseDto.builder()
                 .courseCode(course.getCourseCode())
                 .courseName(course.getCourseName())
-                .midterm(course.getMidterm())
-                .finalExam(course.getFinalExam())
                 .build();
     }
     public List<CourseDto> listToDto(List<Course> courses){
