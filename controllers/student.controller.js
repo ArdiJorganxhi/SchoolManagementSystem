@@ -5,6 +5,7 @@ const Student = db.students;
 const findAllStudents = async function(req, res){
 
     let students = await Student.findAll({
+        attributes: ['id', 'name', 'surname'],
         where: {
             role: "STUDENT"
         },
@@ -20,20 +21,13 @@ const findAllStudents = async function(req, res){
 const findStudent = async function(req, res){
 
     let student = await Student.findOne({
+        attributes: ['id', 'name', 'surname'],
         where: {
             id: req.user.id,
-            role: "STUDENT"
         },
-        raw: true
+       raw: true
     });
-    if(student.role != "STUDENT"){
-        return res.status(400).send({message: "You are not authorized to view this user"});
-    }
-    return res.status(200).send({
-        id: student.id,
-        name: student.name,
-        surname: student.surname
-    })
+    return res.status(200).send(student)
 }
 
 const deleteStudent = async function(req, res){

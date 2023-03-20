@@ -16,6 +16,9 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         defaultValue: "STUDENT"
       },
+      department: {
+        type: Sequelize.STRING,
+      },
       totalCredits: {
         type: Sequelize.INTEGER,
         defaultValue: 0

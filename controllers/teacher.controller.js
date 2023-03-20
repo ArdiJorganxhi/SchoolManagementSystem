@@ -6,6 +6,7 @@ const User = db.users;
 const findAllTeachers = async function(req, res){
 
     let teachers = await User.findAll({
+        attributes: ['id', 'name', 'surname'],
         where: {
             role: "TEACHER",        
         },
@@ -21,6 +22,7 @@ const findAllTeachers = async function(req, res){
 const findTeacher = async function(req, res){
 
     let teacher = await User.findOne({
+        attributes: ['id', 'name', 'surname'],
         where: {
             id: req.user.id,
             role: "TEACHER"
@@ -30,11 +32,7 @@ const findTeacher = async function(req, res){
     if(teacher.role != "TEACHER"){
         return res.status(400).send({message: "You are not authorized to view this user"});
     }
-    return res.status(200).send({
-        id: teacher.id,
-        name: teacher.name,
-        surname: teacher.surname
-    })
+    return res.status(200).send(teacher)
 
 }
 

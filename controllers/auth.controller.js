@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
 
 const registerStudent = async function(req, res){
-    let {name, surname, email, password} = req.body;
+    let {name, surname, email, password, department} = req.body;
 
     var passwordHash = bcrypt.hashSync(password, salt);
 
@@ -25,7 +25,8 @@ const registerStudent = async function(req, res){
         name: name,
         surname: surname,
         email: email,
-        password: passwordHash
+        password: passwordHash,
+        department: department
     });
 
     return res.status(200).send({message: "Student is registered!"});
@@ -34,7 +35,7 @@ const registerStudent = async function(req, res){
 
 const registerTeacher = async function(req, res){
     
-    let {name, surname, email, password} = req.body;
+    let {name, surname, email, password, department} = req.body;
 
     var passwordHash = bcrypt.hashSync(password, salt);
 
@@ -51,7 +52,8 @@ const registerTeacher = async function(req, res){
         name: name,
         surname: surname,
         email: email,
-        password: passwordHash
+        password: passwordHash,
+        department: department
     });
 
     return res.status(200).send({message: "Teacher is registered!"});

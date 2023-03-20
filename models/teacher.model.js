@@ -13,8 +13,11 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
       },
       role: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM("TEACHER", "STUDENT"),
         defaultValue: "TEACHER"
+      },
+      department: {
+        type: Sequelize.STRING,
       }
       
       
