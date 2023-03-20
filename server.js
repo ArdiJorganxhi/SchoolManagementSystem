@@ -5,19 +5,18 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://localhost:8081",
 };
 
 app.use(cors(corsOptions));
 
-
 app.use(express.json());
-
 
 app.use(express.urlencoded({ extended: true }));
 
 const db = require("./config/sequelize.config");
-db.sequelize.sync()
+db.sequelize
+  .sync()
   .then(() => {
     console.log("Synced db.");
   })
@@ -25,14 +24,13 @@ db.sequelize.sync()
     console.log("Failed to sync db: " + err.message);
   });
 
-  const authRouter = require('./routes/auth.route.js')
-  const studentRouter = require('./routes/student.route.js');
-  const teacherRouter = require('./routes/teacher.route.js')
+const authRouter = require("./routes/auth.route.js");
+const studentRouter = require("./routes/student.route.js");
+const teacherRouter = require("./routes/teacher.route.js");
 
-  app.use('/api/auth', authRouter);
-  app.use('/api/students', studentRouter);
-  app.use('/api/teachers', teacherRouter);
-
+app.use("/api/auth", authRouter);
+app.use("/api/students", studentRouter);
+app.use("/api/teachers", teacherRouter);
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome." });
