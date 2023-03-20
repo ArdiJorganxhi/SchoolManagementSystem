@@ -1,9 +1,12 @@
-const userController = require('../controllers/student.controller.js');
+const {findAllStudents, findStudent, deleteStudent} = require('../controllers/student.controller.js')
 const router = require('express').Router();
-const authentication = require('../middleware/verify.token.js');
+const {verifyStudent, verifyUsers, verifyTeacher} = require('../middleware/verify.token.js')
+ 
 
+router.get('/list', verifyUsers, findAllStudents);
+router.get('/', verifyStudent, findStudent);
+router.delete('/:id', verifyTeacher, deleteStudent);
 
-router.get('/', authentication.verifyLogin, userController.findAllStudents);
 
 
 module.exports = router;

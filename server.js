@@ -27,9 +27,11 @@ db.sequelize.sync()
 
   const authRouter = require('./routes/auth.route.js')
   const studentRouter = require('./routes/student.route.js');
+  const teacherRouter = require('./routes/teacher.route.js')
 
   app.use('/api/auth', authRouter);
   app.use('/api/students', studentRouter);
+  app.use('/api/teachers', teacherRouter);
 
 
 app.get("/", (req, res) => {

@@ -6,7 +6,7 @@ var salt = bcrypt.genSaltSync(10);
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
 
-exports.registerStudent = async function(req, res){
+const registerStudent = async function(req, res){
     let {name, surname, email, password} = req.body;
 
     var passwordHash = bcrypt.hashSync(password, salt);
@@ -32,7 +32,7 @@ exports.registerStudent = async function(req, res){
 
 }
 
-exports.registerTeacher = async function(req, res){
+const registerTeacher = async function(req, res){
     
     let {name, surname, email, password} = req.body;
 
@@ -59,7 +59,7 @@ exports.registerTeacher = async function(req, res){
 
 }
 
-exports.login = async function(req, res){
+const login = async function(req, res){
     let {email, password} = req.body;
 
     let user = await User.findOne({
@@ -83,3 +83,5 @@ exports.login = async function(req, res){
 
 
 }
+
+module.exports = {registerStudent, registerTeacher, login}
