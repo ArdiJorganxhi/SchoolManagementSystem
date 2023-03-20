@@ -2,7 +2,7 @@ const db = require("../config/sequelize.config.js");
 const Course = db.courses;
 
 const createCourse = async function (req, res) {
-  let { name, credits, department } = req.body;
+  let { name, credits } = req.body;
 
   let checkCourse = await Course.findOne({
     where: {
@@ -15,7 +15,8 @@ const createCourse = async function (req, res) {
   await Course.create({
     name: name,
     credits: credits,
-    department: department,
+    department: req.user.department,
+    teacherId: req.user.id
   });
   return res.status(200).send({ message: "Course is created!" });
 };

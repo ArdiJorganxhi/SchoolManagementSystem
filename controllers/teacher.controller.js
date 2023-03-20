@@ -1,5 +1,6 @@
 const db = require("../config/sequelize.config.js");
 const Teacher = db.teachers;
+const Course = db.courses;
 
 const findAllTeachers = async function (req, res) {
   let teachers = await Teacher.findAll({
@@ -20,8 +21,13 @@ const findTeacher = async function (req, res) {
       id: req.user.id,
       role: "TEACHER",
     },
-    raw: true,
-  });
+    include: [ {
+        model: Course,
+        as: 'courses',
+        attributes: ["id", "name"]
+    } ,
+ 
+  ]});
 
   return res.status(200).send(teacher);
 };
