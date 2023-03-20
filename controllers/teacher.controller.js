@@ -46,9 +46,7 @@ const deleteTeacher = async function(req, res){
             role: "TEACHER",
         }
     })
-    if(teacher.role != "TEACHER"){
-        return res.status(400).send({message: "You are not authorized to delete this user"});
-    }
+
 
     return res.status(200).send({message: "Teacher is deleted!"});
 }

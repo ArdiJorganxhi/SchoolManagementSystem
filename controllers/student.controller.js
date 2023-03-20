@@ -1,10 +1,10 @@
 const db = require('../config/sequelize.config');
-const User = db.users;
+const Student = db.students;
 
 
 const findAllStudents = async function(req, res){
 
-    let students = await User.findAll({
+    let students = await Student.findAll({
         where: {
             role: "STUDENT"
         },
@@ -19,35 +19,33 @@ const findAllStudents = async function(req, res){
 
 const findStudent = async function(req, res){
 
-    let user = await User.findOne({
+    let student = await Student.findOne({
         where: {
             id: req.user.id,
             role: "STUDENT"
         },
         raw: true
     });
-    if(user.role != "STUDENT"){
+    if(student.role != "STUDENT"){
         return res.status(400).send({message: "You are not authorized to view this user"});
     }
     return res.status(200).send({
-        id: user.id,
-        name: user.name,
-        surname: user.surname
+        id: student.id,
+        name: student.name,
+        surname: student.surname
     })
 }
 
 const deleteStudent = async function(req, res){
     let {id} = req.params;
 
-    const user = await User.destroy({
+    const user = await Student.destroy({
         where: {
             id: id,
             role: "STUDENT"
         }
     });
-    if(user.role != "STUDENT"){
-        return res.status(400).send({message: "You are not authorized to delete this user"});
-    }
+  
 
     return res.status(200).send({message: "Student is deleted successfully!"});
 

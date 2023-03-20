@@ -1,6 +1,7 @@
 require('dotenv').config();
 const db = require('../config/sequelize.config')
-const User = db.users
+const Student = db.students
+const Teacher = db.teachers
 const bcrypt = require('bcryptjs');
 var salt = bcrypt.genSaltSync(10);
 const jwt = require('jsonwebtoken');
@@ -11,21 +12,20 @@ const registerStudent = async function(req, res){
 
     var passwordHash = bcrypt.hashSync(password, salt);
 
-    let checkUser = await User.findOne({
+    let checkStudent = await Student.findOne({
         where: {
             email: email
         }
     });
-    if(checkUser){
+    if(checkStudent){
         return res.status(400).send({message: "Student already exists!"});
     }
 
-    let user = User.create({
+    let student = Student.create({
         name: name,
         surname: surname,
         email: email,
-        password: passwordHash,
-        role: "STUDENT"
+        password: passwordHash
     });
 
     return res.status(200).send({message: "Student is registered!"});
@@ -38,50 +38,68 @@ const registerTeacher = async function(req, res){
 
     var passwordHash = bcrypt.hashSync(password, salt);
 
-    let checkUser = await User.findOne({
+    let checkTeacher = await Teacher.findOne({
         where: {
             email: email
         }
     });
-    if(checkUser){
+    if(checkTeacher){
         return res.status(400).send({message: "Teacher already exists!"});
     }
 
-    let user = User.create({
+    let teacher = Teacher.create({
         name: name,
         surname: surname,
         email: email,
-        password: passwordHash,
-        role: "TEACHER"
+        password: passwordHash
     });
 
     return res.status(200).send({message: "Teacher is registered!"});
 
 }
 
-const login = async function(req, res){
+const loginStudent = async function(req, res){
     let {email, password} = req.body;
 
-    let user = await User.findOne({
+    let student = await Student.findOne({
         where: {
             email: email
         }
     });
-    if(!user){
+    if(!student){
         return res.status(400).send({message: "User doesn't exist!"});
     }
-    let passwordCheck = bcrypt.compareSync(password, user.password)
+    let passwordCheck = bcrypt.compareSync(password, student.password)
 
     if(!passwordCheck){
         return res.status(400).send({message: "Passwords do not match!"});
     }
 
-    let token = jwt.sign({...user}, jwtSecret, {expiresIn: 60*60});
+    let token = jwt.sign({...student}, jwtSecret, {expiresIn: 60*60});
 
     return res.status(200).send(token);
-
-
-
 }
 
-module.exports = {registerStudent, registerTeacher, login}
+const loginTeacher = async function(req, res){
+    let {email, password} = req.body;
+
+    let teacher = await Teacher.findOne({
+        where: {
+            email: email
+        }
+    });
+    if(!teacher){
+        return res.status(400).send({message: "User doesn't exist!"});
+    }
+    let passwordCheck = bcrypt.compareSync(password, teacher.password)
+
+    if(!passwordCheck){
+        return res.status(400).send({message: "Passwords do not match!"});
+    }
+
+    let token = jwt.sign({...teacher}, jwtSecret, {expiresIn: 60*60});
+
+    return res.status(200).send(token);
+}
+
+module.exports = {registerStudent, registerTeacher, loginStudent, loginTeacher}

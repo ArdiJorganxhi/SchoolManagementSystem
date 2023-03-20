@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define("users", {
+    const Student = sequelize.define("students", {
       name: {
         type: Sequelize.STRING,
       },
@@ -14,8 +14,17 @@ module.exports = (sequelize, Sequelize) => {
       },
       role: {
         type: Sequelize.STRING,
+        defaultValue: "STUDENT"
+      },
+      totalCredits: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
+      gpa: {
+        type: Sequelize.FLOAT,
+        defaultValue: 0.0
       }
     });
   
-    return User;
+    return Student;
   };
