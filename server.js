@@ -25,6 +25,12 @@ db.sequelize.sync()
     console.log("Failed to sync db: " + err.message);
   });
 
+  const authRouter = require('./routes/auth.route.js')
+  const studentRouter = require('./routes/student.route.js');
+
+  app.use('/api/auth', authRouter);
+  app.use('/api/students', studentRouter);
+
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome." });
