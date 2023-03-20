@@ -1,8 +1,8 @@
 const db = require("../config/sequelize.config.js");
-const User = db.users;
+const Teacher = db.teachers;
 
 const findAllTeachers = async function (req, res) {
-  let teachers = await User.findAll({
+  let teachers = await Teacher.findAll({
     attributes: ["id", "name", "surname"],
     where: {
       role: "TEACHER",
@@ -14,7 +14,7 @@ const findAllTeachers = async function (req, res) {
 };
 
 const findTeacher = async function (req, res) {
-  let teacher = await User.findOne({
+  let teacher = await Teacher.findOne({
     attributes: ["id", "name", "surname"],
     where: {
       id: req.user.id,
@@ -22,24 +22,19 @@ const findTeacher = async function (req, res) {
     },
     raw: true,
   });
-  if (teacher.role != "TEACHER") {
-    return res
-      .status(400)
-      .send({ message: "You are not authorized to view this user" });
-  }
-  
+
   return res.status(200).send(teacher);
 };
 
 const deleteTeacher = async function (req, res) {
   let { id } = req.params;
-  let teacher = await User.destroy({
+  let teacher = await Teacher.destroy({
     where: {
       id: id,
       role: "TEACHER",
     },
   });
-  
+
   return res.status(200).send({ message: "Teacher is deleted!" });
 };
 
