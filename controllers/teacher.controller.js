@@ -1,15 +1,14 @@
+const { letters } = require("../common/grade.letters.js");
 const db = require("../config/sequelize.config.js");
 const Teacher = db.teachers;
 const Course = db.courses;
 const Student = db.students;
 const StudentCourse = db.studentcourses;
 
+
 const findAllTeachers = async function (req, res) {
   let teachers = await Teacher.findAll({
     attributes: ["id", "name", "surname"],
-    where: {
-      role: "TEACHER",
-    },
     raw: true,
   });
 
@@ -21,7 +20,6 @@ const findTeacher = async function (req, res) {
     attributes: ["id", "name", "surname"],
     where: {
       id: req.user.id,
-      role: "TEACHER",
     },
     include: [ {
         model: Course,
@@ -39,7 +37,6 @@ const deleteTeacher = async function (req, res) {
   let teacher = await Teacher.destroy({
     where: {
       id: id,
-      role: "TEACHER",
     },
   });
 
@@ -62,7 +59,8 @@ const gradeStudent = async function(req, res){
 
     const course = await Course.findOne({
         where: {
-            id: courseId
+            id: courseId,
+            teacherId: req.user.id
         }
     });
 
@@ -70,10 +68,13 @@ const gradeStudent = async function(req, res){
         return res.status(400).send({message: "Course not found!"});
     }
 
+    
+
     await StudentCourse.update({
         midterm: midterm,
         finalExam: finalExam,
-        finalGrade: (midterm + finalExam) / 2
+        finalGrade: (midterm + finalExam) / 2,
+        finalGradeLetter: letters((midterm + finalExam) / 2)
     }, {
         where: {
             student_id: studentId,
