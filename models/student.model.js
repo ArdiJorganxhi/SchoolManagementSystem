@@ -20,8 +20,12 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     totalCredits: {
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
+      type: Sequelize.FLOAT,
+      defaultValue: 0.0,
+    },
+    semesterCredits: {
+      type: Sequelize.FLOAT,
+      defaultValue: 0.0
     },
     gpa: {
       type: Sequelize.FLOAT,

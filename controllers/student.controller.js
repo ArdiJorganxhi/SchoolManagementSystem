@@ -17,11 +17,15 @@ const findAllStudents = async function (req, res) {
 
 const findStudent = async function (req, res) {
   let student = await Student.findOne({
-    attributes: ["id", "name", "surname"],
+    attributes: ["id", "name", "surname", "department", "totalCredits", "semesterCredits"],
     where: {
       id: req.user.id,
     },
-    raw: true,
+    include: [{
+        model: Course,
+        as: 'courses',
+        attributes: ['name', 'credits']
+    }]
   });
   return res.status(200).send(student);
 };
@@ -60,13 +64,17 @@ const enrollToCourse = async function (req, res) {
     return res.status(400).send({message: "Course not found!"});
   }
 
-  await StudentCourse.create({
+  const studentCourse = await StudentCourse.create({
     student_id: req.user.id,
     course_id: courseId,
 
   });
+    if(studentCourse){
+        await Student.update({ semesterCredits: course.credits }, { where: { id: req.user.id } });
+    }
 
   return res.status(200).send({message: "Student is enrolled to course!"})
+
 
 
 };
