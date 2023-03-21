@@ -1,6 +1,8 @@
 const db = require("../config/sequelize.config.js");
 const Teacher = db.teachers;
 const Course = db.courses;
+const Student = db.students;
+const StudentCourse = db.studentcourses;
 
 const findAllTeachers = async function (req, res) {
   let teachers = await Teacher.findAll({
@@ -44,4 +46,42 @@ const deleteTeacher = async function (req, res) {
   return res.status(200).send({ message: "Teacher is deleted!" });
 };
 
-module.exports = { findAllTeachers, findTeacher, deleteTeacher };
+const gradeStudent = async function(req, res){
+    let {studentId, courseId} = req.params;
+    let {midterm, finalExam} = req.body;
+    
+    const student = await Student.findOne({
+        where: {
+            id: studentId
+        }
+    });
+
+    if(!student){
+        return res.status(400).send({message: "Student not found!"});
+    }
+
+    const course = await Course.findOne({
+        where: {
+            id: courseId
+        }
+    });
+
+    if(!course){
+        return res.status(400).send({message: "Course not found!"});
+    }
+
+    await StudentCourse.update({
+        midterm: midterm,
+        finalExam: finalExam,
+        finalGrade: (midterm + finalExam) / 2
+    }, {
+        where: {
+            student_id: studentId,
+            course_id: courseId
+        }
+    });
+
+    return res.status(200).send({message: "Student is graded!"})
+}
+
+module.exports = { findAllTeachers, findTeacher, deleteTeacher, gradeStudent };
