@@ -22,14 +22,15 @@ db.sequelize = sequelize;
 db.students = require("../models/student.model.js")(sequelize, Sequelize);
 db.teachers = require("../models/teacher.model.js")(sequelize, Sequelize);
 db.courses = require("../models/course.model.js")(sequelize, Sequelize);
+db.studentcourses = require("../models/student.course.model.js")(sequelize, Sequelize);
 
 db.students.belongsToMany(db.courses, {
-  through: 'student_course',
+  through: db.studentcourses,
   as: 'courses',
   foreignKey: 'student_id' 
 });
 db.courses.belongsToMany(db.students, {
-  through: 'student_course',
+  through: db.studentcourses,
   as: 'students',
   foreignKey: 'course_id'
 })

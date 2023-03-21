@@ -9,6 +9,12 @@ module.exports = (sequelize, Sequelize) => {
     department: {
       type: Sequelize.STRING,
     },
+    midtermPercentage: {
+        type: Sequelize.INTEGER,
+    },
+    finalExamPercentage: {
+        type: Sequelize.INTEGER
+    }
   });
 
   return Course;

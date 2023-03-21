@@ -1,5 +1,7 @@
 const db = require("../config/sequelize.config");
 const Student = db.students;
+const Course = db.courses;
+const StudentCourse = db.studentcourses;
 
 const findAllStudents = async function (req, res) {
   let students = await Student.findAll({
@@ -37,4 +39,36 @@ const deleteStudent = async function (req, res) {
   return res.status(200).send({ message: "Student is deleted successfully!" });
 };
 
-module.exports = { findAllStudents, findStudent, deleteStudent };
+const enrollToCourse = async function (req, res) {
+  let { courseId } = req.params;
+
+  const student = await Student.findOne({
+    where: {
+        id: req.user.id,
+    }
+  });
+  if(!student){
+    return res.status(400).send({message: "Student not found!"})
+  };
+
+  const course = await Course.findOne({
+    where: {
+        id: courseId,
+    }
+  });
+  if(!course){
+    return res.status(400).send({message: "Course not found!"});
+  }
+
+  await StudentCourse.create({
+    student_id: req.user.id,
+    course_id: courseId,
+
+  });
+
+  return res.status(200).send({message: "Student is enrolled to course!"})
+
+
+};
+
+module.exports = { findAllStudents, findStudent, deleteStudent, enrollToCourse};
