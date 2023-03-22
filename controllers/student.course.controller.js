@@ -72,16 +72,27 @@ const insertGradeLetters = async function (req, res) {
   });
 
   let grades = await GradeLetters.findOne({
-    attributes: ["AA", "AB", "BA", "BB", "BC", "CB", "CC", "CD", "DC", "DD", "FF"],
+    attributes: [
+      "AA",
+      "AB",
+      "BA",
+      "BB",
+      "BC",
+      "CB",
+      "CC",
+      "CD",
+      "DC",
+      "DD",
+      "FF",
+    ],
     where: {
-        course_id: 1
+      course_id: courseId,
     },
-    raw: true
-  })
-  if(!grades){
-    return res.status(400).send({message: "This course doesnt have letters"})
+    raw: true,
+  });
+  if (!grades) {
+    return res.status(400).send({ message: "This course doesnt have letters" });
   }
-  
 
   if (!studentCourse) {
     return res

@@ -2,21 +2,17 @@ const db = require("../config/sequelize.config.js");
 const Course = db.courses;
 const GradeLetters = db.gradeletters;
 
-
 const insertLetters = async function (req, res) {
   let { AA, AB, BA, BB, BC, CB, CC, CD, DC, DD, FF } = req.body;
   let { courseId } = req.params;
 
- 
-
-
   const course = Course.findOne({
     where: {
-        id: courseId
-    }
+      id: courseId,
+    },
   });
-  if(!course){
-    return res.status(400).send({message: "Course not found!"});
+  if (!course) {
+    return res.status(400).send({ message: "Course not found!" });
   }
 
   await GradeLetters.create({
@@ -31,9 +27,9 @@ const insertLetters = async function (req, res) {
     DC: DC,
     DD: DD,
     FF: FF,
-    course_id: courseId
-  })
-  return res.status(200).send({message: 'Letters are inserted!'})
+    course_id: courseId,
+  });
+  return res.status(200).send({ message: "Letters are inserted!" });
 };
 
-module.exports = {insertLetters}
+module.exports = { insertLetters };
