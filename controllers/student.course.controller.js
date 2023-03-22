@@ -78,7 +78,6 @@ const insertGradeLetters = async function (req, res) {
     },
     raw: true
   })
-  console.log("GRAAAAADESSSSSS:" +  grades.AA)
   if(!grades){
     return res.status(400).send({message: "This course doesnt have letters"})
   }
