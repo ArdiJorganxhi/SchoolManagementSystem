@@ -6,18 +6,16 @@ const StudentCourse = db.studentcourses;
 const Op = db.Sequelize.Op;
 
 const gradeStudent = async function (req, res) {
-  let { studentId, courseId } = req.params;
+  let { courseId } = req.params;
   let { midterm, finalExam } = req.body;
 
-  const student = await Student.findOne({
+  const studentCourse = await StudentCourse.findAll({
+    attributes: ["student_id"],
     where: {
-      id: studentId,
+      course_id: courseId,
     },
+    raw: true,
   });
-
-  if (!student) {
-    return res.status(400).send({ message: "Student not found!" });
-  }
 
   const course = await Course.findOne({
     where: {
@@ -30,21 +28,37 @@ const gradeStudent = async function (req, res) {
     return res.status(400).send({ message: "Course not found!" });
   }
 
-  await StudentCourse.update(
-    {
-      midterm: midterm,
-      finalExam: finalExam,
-      finalGrade: (midterm + finalExam) / 2,
-    },
-    {
-      where: {
-        student_id: studentId,
-        course_id: courseId,
-      },
-    }
-  );
+  let midtermGrades = [midterm];
+  let finalGrades = [finalExam];
 
-  return res.status(200).send({ message: "Student is graded!" });
+  let studentsAndGrades = [];
+
+  for (var i = 0; i < studentCourse.length; i++) {
+    studentsAndGrades.push({
+      id: studentCourse[i].student_id,
+      midterm: midtermGrades[0][i],
+      finalExam: finalGrades[0][i],
+    });
+  }
+
+  for (var i = 0; i < studentsAndGrades.length; i++) {
+    await StudentCourse.update(
+      {
+        midterm: studentsAndGrades[i].midterm,
+        finalExam: studentsAndGrades[i].finalExam,
+        finalGrade:
+          (studentsAndGrades[i].midterm + studentsAndGrades[i].finalExam) / 2,
+      },
+      {
+        where: {
+          student_id: studentsAndGrades[i].id,
+          course_id: courseId,
+        },
+      }
+    );
+  }
+
+  return res.status(200).send({ message: "Students are graded!" });
 };
 
 const insertGradeLetters = async function (req, res) {
