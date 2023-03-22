@@ -3,6 +3,7 @@ const db = require("../config/sequelize.config");
 const Student = db.students;
 const Course = db.courses;
 const StudentCourse = db.studentcourses;
+const GradeLetters = db.gradeletters;
 const Op = db.Sequelize.Op;
 
 const gradeStudent = async function (req, res) {
@@ -46,8 +47,6 @@ const gradeStudent = async function (req, res) {
       {
         midterm: studentsAndGrades[i].midterm,
         finalExam: studentsAndGrades[i].finalExam,
-        finalGrade:
-          (studentsAndGrades[i].midterm + studentsAndGrades[i].finalExam) / 2,
       },
       {
         where: {
@@ -72,6 +71,19 @@ const insertGradeLetters = async function (req, res) {
     raw: true,
   });
 
+  let grades = await GradeLetters.findOne({
+    attributes: ["AA", "AB", "BA", "BB", "BC", "CB", "CC", "CD", "DC", "DD", "FF"],
+    where: {
+        course_id: 1
+    },
+    raw: true
+  })
+  console.log("GRAAAAADESSSSSS:" +  grades.AA)
+  if(!grades){
+    return res.status(400).send({message: "This course doesnt have letters"})
+  }
+  
+
   if (!studentCourse) {
     return res
       .status(400)
@@ -90,7 +102,7 @@ const insertGradeLetters = async function (req, res) {
   for (var i = 0; i < studentsGrades.length; i++) {
     await StudentCourse.update(
       {
-        finalGradeLetter: letters(studentsGrades[i].grade),
+        finalGradeLetter: letters(grades, studentsGrades[i].grade),
       },
       {
         where: {

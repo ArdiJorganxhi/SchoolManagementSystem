@@ -23,6 +23,7 @@ db.students = require("../models/student.model.js")(sequelize, Sequelize);
 db.teachers = require("../models/teacher.model.js")(sequelize, Sequelize);
 db.courses = require("../models/course.model.js")(sequelize, Sequelize);
 db.studentcourses = require("../models/student.course.model.js")(sequelize, Sequelize);
+db.gradeletters = require('../models/grade.letter.model.js')(sequelize, Sequelize);
 
 db.students.belongsToMany(db.courses, {
   through: db.studentcourses,
@@ -39,5 +40,9 @@ db.teachers.hasMany(db.courses, {
   as: 'courses'
 })
 
+db.courses.hasMany(db.gradeletters, {
+  as: 'grades_letters',
+  foreignKey: "course_id"
+})
 
 module.exports = db;

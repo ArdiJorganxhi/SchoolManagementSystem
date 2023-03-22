@@ -1,36 +1,43 @@
-const letters = (finalGrade) => {
- 
-   if (finalGrade < 20) {
+const db = require("../config/sequelize.config.js");
+const GradeLetters = db.gradeletters;
+
+
+
+
+const letters = (grades, finalGrade) => {
+
+   
+    if (finalGrade < grades.FF) {
     return "FF";
   }
-  if (finalGrade > 20 && finalGrade < 24) {
+  if (finalGrade > grades.FF - 1 && finalGrade < grades.DC - 1) {
     return "DD";
   }
-  if (finalGrade > 24 && finalGrade < 29) {
+  if (finalGrade > grades.DC - 1 && finalGrade < grades.CD - 1) {
     return "DC";
   }
-  if (finalGrade > 29 && finalGrade < 39) {
+  if (finalGrade > grades.CD - 1 && finalGrade < grades.CC - 1) {
     return "CD";
   }
-  if (finalGrade > 39 && finalGrade < 49) {
+  if (finalGrade > grades.CC - 1 && finalGrade < grades.CB - 1) {
     return "CC";
   }
-  if (finalGrade > 49 && finalGrade < 57) {
+  if (finalGrade > grades.CB - 1 && finalGrade < grades.BC - 1) {
     return "CB";
   }
-  if (finalGrade > 57 && finalGrade < 64) {
+  if (finalGrade > grades.BC - 1 && finalGrade < grades.BB - 1) {
     return "BC";
   }
-  if (finalGrade > 64 && finalGrade < 72) {
+  if (finalGrade > grades.BB - 1 && finalGrade < grades.BA - 1) {
     return "BB";
   }
-  if (finalGrade > 72 && finalGrade < 79) {
+  if (finalGrade > grades.BA - 1 && finalGrade < grades.AB - 1) {
     return "BA";
   }
-  if (finalGrade > 79 && finalGrade < 86) {
+  if (finalGrade > grades.AB - 1 && finalGrade < grades.AA - 1) {
     return "AB";
   }
-  if (finalGrade > 86) {
+  if (finalGrade > grades.AA - 1) {
     return "AA";
   }
 };
