@@ -1,3 +1,7 @@
+let departments = ["COMPUTER ENGINEERING", "ELECTRIC-ELECTRONIC ENGINEERING", "CHEMICAL ENGINEERING", "CIVIL ENGINEERING",
+                   "MECHANICAL ENGINEERING", "MATERIAL SCIENCE AND ENGINEERING", "INDUSTRIAL ENGINEERING"]
+let internshipStatusArray = ["2 COMPULSORY INTERNSHIPS", "1 COMPULSORY INTERNSHIP", "NO INTERNSHIPS REQUIRED"]
+
 module.exports = (sequelize, Sequelize) => {
   const Student = sequelize.define("students", {
     name: {
@@ -12,16 +16,16 @@ module.exports = (sequelize, Sequelize) => {
     password: {
       type: Sequelize.STRING,
     },
-    role: {
-      type: Sequelize.STRING,
-      defaultValue: "STUDENT",
-    },
     department: {
-      type: Sequelize.STRING,
+      type: Sequelize.ENUM(departments),
     },
     totalCredits: {
       type: Sequelize.FLOAT,
       defaultValue: 0.0,
+    },
+    internshipStatus: {
+      type: Sequelize.ENUM(internshipStatusArray),
+      defaultValue: internshipStatusArray[0] 
     },
     semesterCredits: {
       type: Sequelize.FLOAT,

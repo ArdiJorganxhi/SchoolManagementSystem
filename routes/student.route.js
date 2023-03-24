@@ -1,3 +1,4 @@
+const { insertInternship } = require("../controllers/internship.controller.js");
 const {
   findAllStudents,
   findStudent,
@@ -9,11 +10,13 @@ const {
   verifyStudent,
   verifyUsers,
   verifyTeacher,
+  verifySecretary,
 } = require("../middleware/verify.token.js");
 
 router.get("/list", verifyUsers, findAllStudents);
 router.get("/", verifyStudent, findStudent);
 router.delete("/:id", verifyTeacher, deleteStudent);
 router.post("/courses/:courseId", verifyStudent, enrollToCourse);
+router.post('/:studentId/internship', verifySecretary, insertInternship)
 
 module.exports = router;

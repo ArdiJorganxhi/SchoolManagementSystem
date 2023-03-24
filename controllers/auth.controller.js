@@ -2,6 +2,7 @@ require("dotenv").config();
 const db = require("../config/sequelize.config");
 const Student = db.students;
 const Teacher = db.teachers;
+const Secretary = db.secretaries;
 const bcrypt = require("bcryptjs");
 var salt = bcrypt.genSaltSync(10);
 const jwt = require("jsonwebtoken");
@@ -101,9 +102,58 @@ const loginTeacher = async function (req, res) {
   return res.status(200).send(token);
 };
 
+const registerSecretary = async function (req, res) {
+  let { name, surname, email, password, department } = req.body;
+
+  var passwordHash = bcrypt.hashSync(password, salt);
+
+  let checkStudent = await Secretary.findOne({
+    where: {
+      email: email,
+    },
+  });
+  if (checkStudent) {
+    return res.status(400).send({ message: "Secretary already exists!" });
+  }
+
+  await Secretary.create({
+    name: name,
+    surname: surname,
+    email: email,
+    password: passwordHash,
+    department: department,
+  });
+
+  return res.status(200).send({ message: "Secretary is registered!" });
+};
+
+const loginSecretary = async function (req, res) {
+  let { email, password } = req.body;
+
+  let secretary = await Secretary.findOne({
+    where: {
+      email: email,
+    },
+  });
+  if (!secretary) {
+    return res.status(400).send({ message: "Secretary doesn't exist!" });
+  }
+  let passwordCheck = bcrypt.compareSync(password, secretary.password);
+
+  if (!passwordCheck) {
+    return res.status(400).send({ message: "Passwords do not match!" });
+  }
+
+  let token = jwt.sign({ ...secretary }, jwtSecret, { expiresIn: 60 * 60 });
+
+  return res.status(200).send(token);
+};
+
 module.exports = {
   registerStudent,
   registerTeacher,
   loginStudent,
   loginTeacher,
+  registerSecretary,
+  loginSecretary,
 };

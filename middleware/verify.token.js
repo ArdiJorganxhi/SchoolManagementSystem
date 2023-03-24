@@ -1,6 +1,10 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET;
+const db = require("../config/sequelize.config.js");
+const Student = db.students;
+const Teacher = db.teachers;
+const Secretary = db.secretaries;
 
 const verifyUsers = (req, res, next) => {
   let header = req.header("Authorization");
@@ -22,7 +26,12 @@ const verifyUsers = (req, res, next) => {
 
 const verifyStudent = (req, res, next) => {
   verifyUsers(req, res, () => {
-    if (req.user.id === req.params.id || req.user.role === "STUDENT") {
+    const student = Student.findOne({
+      where: {
+        id: req.user.id,
+      },
+    });
+    if (req.user.id === req.params.id || student != null) {
       next();
     } else {
       return res.status(403).send({ message: "You are not authorized!" });
@@ -32,7 +41,13 @@ const verifyStudent = (req, res, next) => {
 
 const verifyTeacher = (req, res, next) => {
   verifyUsers(req, res, () => {
-    if (req.user.id === req.params.id || req.user.role === "TEACHER") {
+    const teacher = Teacher.findOne({
+      where: {
+        id: req.user.id,
+      },
+    });
+
+    if (req.user.id === req.params.id || teacher != null) {
       next();
     } else {
       return res.status(403).send({ message: "You are not authorized!" });
@@ -40,4 +55,21 @@ const verifyTeacher = (req, res, next) => {
   });
 };
 
-module.exports = { verifyUsers, verifyStudent, verifyTeacher };
+const verifySecretary = (req, res, next) => {
+  verifyUsers(req, res, () => {
+    const secretary = Secretary.findOne({
+      where: {
+        id: req.user.id,
+      },
+    });
+    if (req.user.id === req.params.id || secretary != null) {
+      next();
+    } else {
+      return res
+        .status(403)
+        .send({ message: "You are not authorized or user doesn't exist!" });
+    }
+  });
+};
+
+module.exports = { verifyUsers, verifyStudent, verifyTeacher, verifySecretary };

@@ -2,6 +2,7 @@ const db = require("../config/sequelize.config");
 const Student = db.students;
 const Course = db.courses;
 const StudentCourse = db.studentcourses;
+const Internship = db.internships;
 
 const findAllStudents = async function (req, res) {
   let students = await Student.findAll({
@@ -24,8 +25,14 @@ const findStudent = async function (req, res) {
     include: [{
         model: Course,
         as: 'courses',
-        attributes: ['name', 'credits']
-    }]
+        attributes: ['name', 'credits'],
+    },{
+        model: Internship,
+        as: 'internships',
+        attributes: ['companyName', 'startDate', 'endDate']
+    }],
+   
+
   });
   return res.status(200).send(student);
 };
@@ -36,7 +43,6 @@ const deleteStudent = async function (req, res) {
   const user = await Student.destroy({
     where: {
       id: id,
-      role: "STUDENT",
     },
   });
 
