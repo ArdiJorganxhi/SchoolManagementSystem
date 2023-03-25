@@ -1,9 +1,11 @@
-const { insertInternship } = require("../controllers/internship.controller.js");
+const { insertInternship, getStudentInternships } = require("../controllers/internship.controller.js");
 const {
   findAllStudents,
   findStudent,
   deleteStudent,
   enrollToCourse,
+  unenrollFromCourse,
+  getSchedule,
 } = require("../controllers/student.controller.js");
 const router = require("express").Router();
 const {
@@ -17,6 +19,9 @@ router.get("/list", verifyUsers, findAllStudents);
 router.get("/", verifyStudent, findStudent);
 router.delete("/:id", verifyTeacher, deleteStudent);
 router.post("/courses/:courseId", verifyStudent, enrollToCourse);
+router.delete("/courses/:courseId", verifyStudent, unenrollFromCourse)
 router.post('/:studentId/internship', verifySecretary, insertInternship)
+router.get('/course-calendar', verifyStudent, getSchedule)
+router.get('/internships', verifyStudent, getStudentInternships)
 
 module.exports = router;

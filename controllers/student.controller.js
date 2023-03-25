@@ -1,3 +1,4 @@
+const { sequelize } = require("../config/sequelize.config");
 const db = require("../config/sequelize.config");
 const Student = db.students;
 const Course = db.courses;
@@ -18,21 +19,37 @@ const findAllStudents = async function (req, res) {
 
 const findStudent = async function (req, res) {
   let student = await Student.findOne({
-    attributes: ["id", "name", "surname", "department", "totalCredits", "semesterCredits"],
+    attributes: [
+      "id",
+      "name",
+      "surname",
+      "department",
+      "totalCredits",
+      "semesterCredits",
+    ],
     where: {
       id: req.user.id,
     },
-    include: [{
+    include: [
+      {
         model: Course,
-        as: 'courses',
-        attributes: ['name', 'credits'],
-    },{
+        as: "courses",
+        attributes: ["name", "credits"],
+        through: {
+          attributes: [
+            "midterm",
+            "finalExam",
+            "finalGrade",
+            "finalGradeLetter",
+          ],
+        },
+      },
+      {
         model: Internship,
-        as: 'internships',
-        attributes: ['companyName', 'startDate', 'endDate']
-    }],
-   
-
+        as: "internships",
+        attributes: ["companyName", "startDate", "endDate"],
+      },
+    ],
   });
   return res.status(200).send(student);
 };
@@ -40,7 +57,7 @@ const findStudent = async function (req, res) {
 const deleteStudent = async function (req, res) {
   let { id } = req.params;
 
-  const user = await Student.destroy({
+  await Student.destroy({
     where: {
       id: id,
     },
@@ -54,35 +71,104 @@ const enrollToCourse = async function (req, res) {
 
   const student = await Student.findOne({
     where: {
-        id: req.user.id,
-    }
+      id: req.user.id,
+    },
   });
-  if(!student){
-    return res.status(400).send({message: "Student not found!"})
-  };
+  if (!student) {
+    return res.status(400).send({ message: "Student not found!" });
+  }
+
+  const studentCourses = await Student.findAll({
+    attributes: [
+      [sequelize.literal("courses.lectureday"), "lectureday"],
+      [sequelize.literal("courses.lecturestart"), "lecturestart"],
+    ],
+    where: {
+      id: req.user.id,
+    },
+    include: {
+      model: Course,
+      as: "courses",
+      attributes: [],
+      through: {
+        attributes: [],
+      },
+    },
+    raw: true,
+  });
 
   const course = await Course.findOne({
     where: {
-        id: courseId,
-    }
+      id: courseId,
+    },
+    raw: true,
   });
-  if(!course){
-    return res.status(400).send({message: "Course not found!"});
+  if (!course) {
+    return res.status(400).send({ message: "Course not found!" });
+  }
+
+  for (var i = 0; i < studentCourses.length; i++) {
+    if (
+      studentCourses[i].lectureday === course.lectureday &&
+      studentCourses[i].lecturestart === course.lecturestart
+    ) {
+      return res.status(400).send({ message: "Error!" });
+    }
   }
 
   const studentCourse = await StudentCourse.create({
     student_id: req.user.id,
     course_id: courseId,
-
   });
-    if(studentCourse){
-        await Student.update({ semesterCredits: course.credits }, { where: { id: req.user.id } });
-    }
+  if (studentCourse) {
+    await Student.update(
+      { semesterCredits: course.credits },
+      { where: { id: req.user.id } }
+    );
+  }
 
-  return res.status(200).send({message: "Student is enrolled to course!"})
-
-
-
+  return res.status(200).send("Student is enrolled!");
 };
 
-module.exports = { findAllStudents, findStudent, deleteStudent, enrollToCourse};
+const unenrollFromCourse = async function (req, res) {
+  let { courseId } = req.params;
+
+  await StudentCourse.destroy({
+    where: {
+      course_id: courseId,
+      student_id: req.user.id,
+    },
+  });
+  return res
+    .status(200)
+    .send({ message: "Student is unenrolled from course!" });
+};
+
+const getSchedule = async function (req, res) {
+  const schedule = await Student.findAll({
+    include: [
+      {
+        model: Course,
+        as: "courses",
+        attributes: ["name", "lectureday", "lecturestart", "lecturefinish"],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+    where: {
+      id: req.user.id,
+    },
+    attributes: [],
+  });
+  return res.status(200).send(schedule);
+};
+
+module.exports = {
+  findAllStudents,
+  findStudent,
+  deleteStudent,
+  enrollToCourse,
+  unenrollFromCourse,
+  getSchedule,
+};

@@ -30,6 +30,7 @@ const teacherRouter = require("./routes/teacher.route.js");
 const courseRouter = require('./routes/course.route.js');
 const internshipRouter = require('./routes/internship.route.js')
 
+
 app.use("/api/auth", authRouter);
 app.use("/api/students", studentRouter);
 app.use("/api/teachers", teacherRouter);

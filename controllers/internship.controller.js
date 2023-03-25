@@ -1,4 +1,5 @@
 const { internshipValidation } = require("../common/internship.validation.js");
+const { sequelize } = require("../config/sequelize.config.js");
 const db = require("../config/sequelize.config.js");
 const Internship = db.internships;
 const Student = db.students;
@@ -38,4 +39,34 @@ const insertInternship = async function (req, res) {
   return res.status(200).send({ message: "Internship is inserted!" });
 };
 
-module.exports = { insertInternship };
+const getAllInternships = async function (req, res) {
+  const internships = await Internship.findAll({
+    attributes: [
+      "companyName",
+      "startDate",
+      "endDate",
+      [sequelize.literal("students.name"), "name"],
+    ],
+    include: {
+      model: Student,
+      as: "students",
+      attributes: [],
+    },
+    raw: true,
+  });
+
+  return res.status(200).send(internships);
+};
+
+const getStudentInternships = async function (req, res) {
+  const getInternships = await Internship.findAll({
+    attributes: ["companyName", "startDate", "endDate"],
+    where: {
+      student_id: req.user.id,
+    },
+    raw: true,
+  });
+  return res.status(200).send(getInternships);
+};
+
+module.exports = { insertInternship, getAllInternships, getStudentInternships };

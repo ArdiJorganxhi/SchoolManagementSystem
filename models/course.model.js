@@ -1,3 +1,13 @@
+let days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
 module.exports = (sequelize, Sequelize) => {
   const Course = sequelize.define("courses", {
     name: {
@@ -9,12 +19,22 @@ module.exports = (sequelize, Sequelize) => {
     department: {
       type: Sequelize.STRING,
     },
-    midtermPercentage: {
-        type: Sequelize.INTEGER,
+    lectureday: {
+      type: Sequelize.ENUM(days),
     },
-    finalExamPercentage: {
-        type: Sequelize.INTEGER
-    }
+    lecturestart: {
+      type: Sequelize.TIME,
+    },
+    lecturefinish: {
+      type: Sequelize.TIME,
+    },
+
+    midtermpercentage: {
+      type: Sequelize.INTEGER,
+    },
+    finalexampercentage: {
+      type: Sequelize.INTEGER,
+    },
   });
 
   return Course;
