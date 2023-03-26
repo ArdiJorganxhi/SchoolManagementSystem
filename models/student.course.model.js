@@ -1,5 +1,8 @@
+const gradeLetters = require('../common/enums/grade.letters.enum.js');
 const { letters } = require('../common/grade.letters.js');
 const db = require('../config/sequelize.config.js');
+const Student = db.students;
+const Course = db.courses;
 
 module.exports = (sequelize, Sequelize) => {
     const StudentCourse = sequelize.define("students_courses", {
@@ -13,15 +16,34 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: 0.0
         },
         finalGrade: {
-            type: Sequelize.FLOAT,
-            defaultValue: (this.midterm + this.finalExam) / 2
+            type: Sequelize.VIRTUAL,
+            get(){
+                return (this.getDataValue('midterm') + this.getDataValue('finalExam')) / 2
+            }
+            
         },
         finalGradeLetter: {
-            type: Sequelize.ENUM("AA", "AB", "BA", "BB", "BC", "CB", "CC", "CD", "DC", "DD", "FF"),
-            defaultValue: letters((this.midterm + this.finalExam) / 2)
+            type: Sequelize.ENUM(gradeLetters)
         }
         
 
+    }, {
+        hooks: {
+            afterDestroy: (async (instance) => {
+                const student = await Student.findOne({
+                    where: {
+                        id: instance.student_id
+                    }
+                })
+                const course = await Course.findOne({
+                    where: {
+                        id: instance.course_id
+                    }
+                })
+                await student.decrement('semesterCredits', {by: course.credits})
+
+            })
+        }
     });
   
     return StudentCourse;

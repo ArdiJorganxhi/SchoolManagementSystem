@@ -1,3 +1,5 @@
+const departments = require("../common/enums/departments.enum");
+
 module.exports = (sequelize, Sequelize) => {
   const Teacher = sequelize.define("teachers", {
     name: {
@@ -13,7 +15,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     department: {
-      type: Sequelize.STRING,
+      type: Sequelize.ENUM(departments)
     },
   });
 

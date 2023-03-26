@@ -64,7 +64,7 @@ const insertGradeLetters = async function (req, res) {
   let { courseId } = req.params;
 
   let studentCourse = await StudentCourse.findAll({
-    attributes: ["student_id", "finalGrade"],
+    attributes: ["student_id", "midterm", "finalExam"],
     where: {
       course_id: courseId,
     },
@@ -105,14 +105,15 @@ const insertGradeLetters = async function (req, res) {
   for (var i = 0; i < studentCourse.length; i++) {
     studentsGrades.push({
       id: studentCourse[i].student_id,
-      grade: studentCourse[i].finalGrade,
+      midterm: studentCourse[i].midterm,
+      finalExam: studentCourse[i].finalExam,
     });
   }
 
   for (var i = 0; i < studentsGrades.length; i++) {
     await StudentCourse.update(
       {
-        finalGradeLetter: letters(grades, studentsGrades[i].grade),
+        finalGradeLetter: letters(grades, studentsGrades[i].midterm, studentsGrades[i].finalExam),
       },
       {
         where: {

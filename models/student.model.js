@@ -1,6 +1,6 @@
-let departments = ["COMPUTER ENGINEERING", "ELECTRIC-ELECTRONIC ENGINEERING", "CHEMICAL ENGINEERING", "CIVIL ENGINEERING",
-                   "MECHANICAL ENGINEERING", "MATERIAL SCIENCE AND ENGINEERING", "INDUSTRIAL ENGINEERING"]
-let internshipStatusArray = ["2 COMPULSORY INTERNSHIPS", "1 COMPULSORY INTERNSHIP", "NO INTERNSHIPS REQUIRED"]
+const departments = require("../common/enums/departments.enum");
+const internshipStatusArray = require("../common/enums/internship.status.enum");
+
 
 module.exports = (sequelize, Sequelize) => {
   const Student = sequelize.define("students", {

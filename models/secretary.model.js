@@ -1,12 +1,5 @@
-let departments = [
-  "COMPUTER ENGINEERING",
-  "ELECTRIC-ELECTRONIC ENGINEERING",
-  "CHEMICAL ENGINEERING",
-  "CIVIL ENGINEERING",
-  "MECHANICAL ENGINEERING",
-  "MATERIAL SCIENCE AND ENGINEERING",
-  "INDUSTRIAL ENGINEERING",
-];
+const departments = require("../common/enums/departments.enum");
+
 
 module.exports = (sequelize, Sequelize) => {
   const Secretary = sequelize.define("secretaries", {

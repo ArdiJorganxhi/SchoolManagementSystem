@@ -107,25 +107,16 @@ const enrollToCourse = async function (req, res) {
     return res.status(400).send({ message: "Course not found!" });
   }
 
-  for (var i = 0; i < studentCourses.length; i++) {
-    if (
-      studentCourses[i].lectureday === course.lectureday &&
-      studentCourses[i].lecturestart === course.lecturestart
-    ) {
-      return res.status(400).send({ message: "Error!" });
-    }
-  }
+ 
 
   const studentCourse = await StudentCourse.create({
     student_id: req.user.id,
     course_id: courseId,
   });
-  if (studentCourse) {
-    await Student.update(
-      { semesterCredits: course.credits },
-      { where: { id: req.user.id } }
-    );
+  if(studentCourse){
+    await student.increment('semesterCredits', {by: course.credits})
   }
+  
 
   return res.status(200).send("Student is enrolled!");
 };
@@ -133,12 +124,26 @@ const enrollToCourse = async function (req, res) {
 const unenrollFromCourse = async function (req, res) {
   let { courseId } = req.params;
 
-  await StudentCourse.destroy({
+  const student = await Student.findOne({
+    where: {
+      id: req.user.id
+    }
+  })
+
+  const course = await Course.findOne({
+    where: {
+      id: courseId
+    }
+  })
+ const studentCourse = await StudentCourse.destroy({
     where: {
       course_id: courseId,
       student_id: req.user.id,
     },
   });
+  if(studentCourse){
+    await student.decrement('semesterCredits', {by: course.credits})
+  }
   return res
     .status(200)
     .send({ message: "Student is unenrolled from course!" });

@@ -20,9 +20,11 @@ db.sequelize
   .then(() => {
     console.log("Synced db.");
   })
+  
   .catch((err) => {
     console.log("Failed to sync db: " + err.message);
   });
+
 
 const authRouter = require("./routes/auth.route.js");
 const studentRouter = require("./routes/student.route.js");
