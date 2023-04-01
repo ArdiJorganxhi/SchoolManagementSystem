@@ -24,6 +24,6 @@ router.delete("/courses/:courseId", verifyStudent, unenrollFromCourse)
 router.post('/:studentId/internship', verifySecretary, insertInternship)
 router.get('/course-calendar', verifyStudent, getSchedule)
 router.get('/internships', verifyStudent, getStudentInternships)
-router.get('/gpa', calculateGpa)
+router.get('/gpa', verifyTeacher, calculateGpa)
 
 module.exports = router;
