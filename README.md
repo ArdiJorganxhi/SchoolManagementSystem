@@ -8,18 +8,20 @@ Teachers can create, update and delete courses, they can grade students' midterm
 
 Also secretaries are able to manage only internship operations.
 
+This API contains role-based authorization, so every user doesn't have all authorities, please check API for authorization details.
+
 This API isn't developed semester-based, so think of it as only one semester for every operation you will try in API.
 
 
 
 # Dependencies and Tools 
 
-Express
-Sequelize ORM
-Postgres
-Jsonwebtoken
-Bcrypt
-Dotenv
+- Express
+- Sequelize ORM
+- Postgres
+- Jsonwebtoken
+- Bcrypt
+- Dotenv
 
 
 # Prerequisites
@@ -31,4 +33,6 @@ Before running API, please run npm install on your terminal to install required 
 
 # Database Design
 
-![School 6](https://user-images.githubusercontent.com/73110402/229302091-685381db-086d-4b4f-aabf-15a641ae65f7.png)
+![School](https://user-images.githubusercontent.com/73110402/229302242-0a06d56d-e0ea-4276-b4bb-58e4d655093c.svg)
+
+
