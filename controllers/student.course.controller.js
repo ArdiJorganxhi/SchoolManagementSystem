@@ -1,4 +1,5 @@
 const gradeletterswithcredits = require("../common/calculate.gpa");
+const coursePassed = require("../common/course.passed.validation");
 const { letters } = require("../common/grade.letters");
 const { sequelize } = require("../config/sequelize.config");
 const db = require("../config/sequelize.config");
@@ -66,12 +67,19 @@ const insertGradeLetters = async function (req, res) {
   let { courseId } = req.params;
 
   let studentCourse = await StudentCourse.findAll({
-    attributes: ["student_id", "midterm", "finalExam"],
+    attributes: ["student_id", "midterm", "finalExam", "finalGradeLetter"],
     where: {
       course_id: courseId,
     },
     raw: true,
   });
+
+  let course = await Course.findOne({
+    attributes: ['credits'],
+    where: {
+      id: courseId
+    }
+  })
 
   let grades = await GradeLetters.findOne({
     attributes: [
@@ -109,6 +117,7 @@ const insertGradeLetters = async function (req, res) {
       id: studentCourse[i].student_id,
       midterm: studentCourse[i].midterm,
       finalExam: studentCourse[i].finalExam,
+      finalLetter: studentCourse[i].finalGradeLetter
     });
   }
 
@@ -124,6 +133,14 @@ const insertGradeLetters = async function (req, res) {
         },
       }
     );
+
+    await Student.update({
+      totalCredits: coursePassed(studentsGrades[i].finalGradeLetter, course[i].credits)
+    }, {
+      where: {
+        id: studentsGrades[i].id
+      }
+    })
   }
 
   return res.status(200).send();
