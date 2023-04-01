@@ -7,6 +7,7 @@ const {
   unenrollFromCourse,
   getSchedule,
 } = require("../controllers/student.controller.js");
+const { calculateGpa } = require("../controllers/student.course.controller.js");
 const router = require("express").Router();
 const {
   verifyStudent,
@@ -23,5 +24,6 @@ router.delete("/courses/:courseId", verifyStudent, unenrollFromCourse)
 router.post('/:studentId/internship', verifySecretary, insertInternship)
 router.get('/course-calendar', verifyStudent, getSchedule)
 router.get('/internships', verifyStudent, getStudentInternships)
+router.get('/gpa', calculateGpa)
 
 module.exports = router;

@@ -38,6 +38,8 @@ db.courses.belongsToMany(db.students, {
   foreignKey: 'course_id'
 })
 
+
+
 db.teachers.hasMany(db.courses, {
   as: 'courses'
 })

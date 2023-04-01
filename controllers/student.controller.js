@@ -26,6 +26,7 @@ const findStudent = async function (req, res) {
       "department",
       "totalCredits",
       "semesterCredits",
+      "gpa"
     ],
     where: {
       id: req.user.id,
@@ -116,6 +117,7 @@ const enrollToCourse = async function (req, res) {
   if(studentCourse){
     await student.increment('semesterCredits', {by: course.credits})
   }
+
   
 
   return res.status(200).send("Student is enrolled!");
@@ -144,6 +146,7 @@ const unenrollFromCourse = async function (req, res) {
   if(studentCourse){
     await student.decrement('semesterCredits', {by: course.credits})
   }
+ 
   return res
     .status(200)
     .send({ message: "Student is unenrolled from course!" });

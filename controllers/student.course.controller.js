@@ -1,4 +1,6 @@
+const gradeletterswithcredits = require("../common/calculate.gpa");
 const { letters } = require("../common/grade.letters");
+const { sequelize } = require("../config/sequelize.config");
 const db = require("../config/sequelize.config");
 const Student = db.students;
 const Course = db.courses;
@@ -127,4 +129,62 @@ const insertGradeLetters = async function (req, res) {
   return res.status(200).send();
 };
 
-module.exports = { gradeStudent, insertGradeLetters };
+const calculateGpa = async function(req, res){
+  let students = await Student.findAll(
+    {
+      attributes: ['id', [sequelize.literal('courses.credits'), 'credits']],
+      include: [{
+        model: Course,
+        as: 'courses',
+        attributes: [],
+        through: {
+          model: StudentCourse,
+          as: 'students_courses',
+          attributes: []
+        }
+      }]
+    }
+  );
+
+  
+
+  let studentsInfo = []
+  let totalCredits = 0
+  let studentCredits = 0
+
+  for(var i = 0; i < students.length; i++){
+    let gradeLetters = await StudentCourse.findAll({
+      attributes: ['finalGradeLetter'],
+      where: {
+        student_id: students[i].id
+      }
+    }) 
+
+      studentsInfo.push({
+        id: students[i].id,
+        credits: students[i].credits,
+        grade: gradeLetters[i].finalGradeLetter
+      })
+  }
+
+  for(var i = 0; i < studentsInfo.length; i++){
+      totalCredits += studentsInfo[i].credits
+      studentCredits += gradeletterswithcredits(studentsInfo[i].grade, studentsInfo[i].credits)
+      await Student.update(
+        {
+          gpa: studentCredits / totalCredits
+        },
+        {
+          where: {
+            id: studentsInfo[i].id,
+          },
+        }
+      );
+  }
+
+ 
+
+  return res.status(200).send()
+}
+
+module.exports = { gradeStudent, insertGradeLetters, calculateGpa };

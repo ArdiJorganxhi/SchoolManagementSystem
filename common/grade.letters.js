@@ -1,6 +1,3 @@
-const db = require("../config/sequelize.config.js");
-const GradeLetters = db.gradeletters;
-
 const letters = (grades, midterm, finalExam) => {
   let finalGrade = (midterm + finalExam) / 2
   if (finalGrade < grades.FF) {
