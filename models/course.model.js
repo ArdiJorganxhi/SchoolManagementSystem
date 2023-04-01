@@ -28,13 +28,7 @@ module.exports = (sequelize, Sequelize) => {
     lecturefinish: {
       type: Sequelize.TIME,
     },
-
-    midtermpercentage: {
-      type: Sequelize.INTEGER,
-    },
-    finalexampercentage: {
-      type: Sequelize.INTEGER,
-    },
+    
   });
 
   return Course;
