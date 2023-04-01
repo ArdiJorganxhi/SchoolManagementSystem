@@ -33,6 +33,7 @@ Before running API, please run npm install on your terminal to install required 
 
 # Database Design
 
-![School](https://user-images.githubusercontent.com/73110402/229302242-0a06d56d-e0ea-4276-b4bb-58e4d655093c.svg)
+<img width="801" alt="Screenshot 2023-04-01 at 19 16 48" src="https://user-images.githubusercontent.com/73110402/229302326-cc079620-9155-42bf-95d4-63e2a2f2e5fc.png">
+
 
 
